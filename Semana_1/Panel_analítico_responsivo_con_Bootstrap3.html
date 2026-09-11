@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Analítico - Semana 1</title>
+    
+    <!-- Aquí conectamos tu página con Bootstrap 3, tal como pide el apunte -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+
+    <!-- Contenedor principal de la página -->
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Barra lateral de navegación (Ocupa 3 de 12 columnas en PC, y todo el ancho en celular) -->
+            <nav class="col-xs-12 col-sm-4 col-lg-3" aria-label="Navegación principal">
+                <h2>Panel El Asador</h2>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#resumen">Resumen de Ventas</a></li>
+                    <li><a href="#ventas">Gestión de Carnes</a></li>
+                    <li><a href="#clientes">Clientes Frecuentes</a></li>
+                </ul>
+            </nav>
+
+            <!-- Contenido principal (Ocupa 9 de 12 columnas en PC) -->
+            <main class="col-xs-12 col-sm-8 col-lg-9" id="contenido">
+                <header class="page-header">
+                    <h1>Resumen ejecutivo de la semana</h1>
+                </header>
+
+                <!-- Fila de Indicadores (4 tarjetas, cada una ocupa 3 columnas) -->
+                <section class="row" aria-label="Indicadores principales">
+                    <article class="col-xs-12 col-md-6 col-lg-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Ventas de Hoy</div>
+                            <div class="panel-body">$ 12.500.000</div>
+                        </div>
+                    </article>
+                    <article class="col-xs-12 col-md-6 col-lg-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Pedidos en Mesa</div>
+                            <div class="panel-body">48</div>
+                        </div>
+                    </article>
+                    <article class="col-xs-12 col-md-6 col-lg-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Delivery</div>
+                            <div class="panel-body">15 pedidos</div>
+                        </div>
+                    </article>
+                    <article class="col-xs-12 col-md-6 col-lg-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Reclamos</div>
+                            <div class="panel-body">0</div>
+                        </div>
+                    </article>
+                </section>
+
+                <!-- Tabla de datos que se adapta a celulares -->
+                <section class="table-responsive" aria-labelledby="tabla-titulo">
+                    <h2 id="tabla-titulo">Últimas transacciones registradas</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Estado</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>11-09-2026</td>
+                                <td>Joaquín Latham</td>
+                                <td>Pagado</td>
+                                <td>$ 45.000</td>
+                            </tr>
+                            <tr>
+                                <td>11-09-2026</td>
+                                <td>Vadin Fuentes</td>
+                                <td>En preparación</td>
+                                <td>$ 32.500</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+    </div>
+
+</body>
+</html>
