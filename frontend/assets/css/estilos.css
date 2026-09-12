@@ -1,0 +1,435 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #111;
+}
+
+
+/* ENCABEZADO */
+
+.encabezado {
+    background-color: #111;
+    color: white;
+
+    min-height: 80px;
+
+    padding: 15px 40px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.logo {
+    color: #c40000;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+
+.redes {
+    color: white;
+}
+
+
+/* MENÚ */
+
+.menu-navegacion {
+    background-color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 18px;
+
+    border-bottom: 1px solid #ccc;
+}
+
+
+.menu-navegacion a {
+    color: #111;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+
+.menu-navegacion a:hover {
+    color: #c40000;
+}
+
+
+/* HERO */
+
+.hero {
+    min-height: 520px;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.65),
+            rgba(0, 0, 0, 0.65)
+        ),
+        url("https://via.placeholder.com/1600x700?text=El+Asador");
+
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    color: white;
+}
+
+
+.hero-contenido {
+    max-width: 800px;
+    padding: 30px;
+}
+
+
+.hero h1 {
+    font-size: 70px;
+    color: #e00000;
+    font-weight: bold;
+}
+
+
+.hero h2 {
+    font-size: 34px;
+    margin: 20px 0;
+}
+
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+
+/* SECCIONES */
+
+.seccion {
+    padding: 70px 30px;
+}
+
+
+.titulo-seccion {
+    text-align: center;
+    font-size: 38px;
+    margin-bottom: 45px;
+}
+
+
+/* SERVICIOS */
+
+.servicios-grid {
+    max-width: 1100px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 30px;
+}
+
+
+.servicio {
+    background-color: white;
+    padding: 35px;
+
+    text-align: center;
+
+    border-radius: 8px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+
+.servicio h3 {
+    margin-bottom: 20px;
+}
+
+
+.servicio p {
+    margin-bottom: 25px;
+}
+
+
+/* PRODUCTOS */
+
+.destacados {
+    background-color: #e9e9e9;
+}
+
+
+.productos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 40px;
+}
+
+
+.card-producto {
+    background-color: white;
+
+    width: 280px;
+
+    padding: 15px;
+
+    text-align: center;
+
+    border-radius: 8px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+
+.card-producto img {
+    width: 100%;
+    height: 190px;
+
+    object-fit: cover;
+
+    margin-bottom: 20px;
+}
+
+
+.card-producto h3 {
+    margin-bottom: 10px;
+}
+
+
+.card-producto p {
+    color: #c40000;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+
+/* NOSOTROS */
+
+.nosotros {
+    background-color: #111;
+    color: white;
+
+    padding: 80px 30px;
+}
+
+
+.nosotros-contenido {
+    max-width: 850px;
+    margin: auto;
+
+    text-align: center;
+}
+
+
+.nosotros h2 {
+    color: #e00000;
+
+    font-size: 40px;
+
+    margin-bottom: 30px;
+}
+
+
+.nosotros p {
+    font-size: 19px;
+    line-height: 1.7;
+}
+
+
+/* FOOTER */
+
+.pie-pagina {
+    background-color: #090909;
+    color: white;
+
+    padding: 45px;
+
+    display: flex;
+    justify-content: space-around;
+
+    gap: 40px;
+
+    flex-wrap: wrap;
+}
+
+
+.pie-pagina h2 {
+    color: #e00000;
+
+    font-size: 22px;
+
+    margin-bottom: 15px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+
+    .encabezado {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+
+    .menu-navegacion {
+        flex-wrap: wrap;
+    }
+
+
+    .servicios-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .hero h1 {
+        font-size: 48px;
+    }
+
+
+    .hero h2 {
+        font-size: 25px;
+    }
+
+}
+
+.titulo-categoria {
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+    color: #c40000;
+    margin-top: 30px;
+}
+
+
+.descripcion-categoria {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    max-width: 700px;
+    margin: 10px auto 30px auto;
+}
+
+
+.separador-categorias {
+    margin: 80px auto;
+    width: 80%;
+    border: 0;
+    border-top: 2px solid #cccccc;
+}
+
+
+.filtros a {
+    color: #111;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+.filtros a:hover {
+    color: #c40000;
+}
+
+/* ===================================== */
+/* CATEGORIAS DE CARNES                  */
+/* ===================================== */
+
+.titulo-categoria {
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+    color: #c40000;
+    margin-top: 30px;
+}
+
+
+.descripcion-categoria {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    max-width: 700px;
+    margin: 10px auto 30px auto;
+}
+
+
+.separador-categorias {
+    margin: 80px auto;
+    width: 80%;
+    border: 0;
+    border-top: 2px solid #cccccc;
+}
+
+
+/* ===================================== */
+/* DESCRIPCION DE PRODUCTOS              */
+/* ===================================== */
+
+.descripcion-producto {
+    font-size: 15px !important;
+    line-height: 1.5;
+    color: #555 !important;
+    font-weight: normal !important;
+
+    min-height: 110px;
+
+    margin: 10px 0 15px 0;
+}
+
+
+/* PRECIO */
+
+.precio-producto {
+    color: #c40000 !important;
+    font-size: 25px !important;
+    font-weight: bold !important;
+
+    margin-bottom: 15px;
+}
+
+
+/* TARJETA */
+
+.card-producto {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* BOTON SIEMPRE ABAJO */
+
+.card-producto button {
+    margin-top: auto;
+}
+
+
+/* FILTROS */
+
+.filtros a {
+    color: #111;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+.filtros a:hover {
+    color: #c40000;
+}

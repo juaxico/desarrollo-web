@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Parrillas - El Asador</title>
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="./assets/css/estilos.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ENCABEZADO -->
+
+    <header class="encabezado">
+
+        <div class="logo">
+            El Asador
+        </div>
+
+
+        <div class="d-flex align-items-center gap-3">
+
+            <!-- CARRITO -->
+
+            <a
+                href="carrito.html"
+                class="btn btn-outline-light"
+            >
+
+                🛒 Carrito
+
+                (<span id="contador-carrito">0</span>)
+
+            </a>
+
+
+            <!-- ACCEDER -->
+
+            <button
+                type="button"
+                class="btn btn-outline-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#myModal"
+            >
+                Acceder
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- MENÚ -->
+
+    <nav class="menu-navegacion">
+
+        <a href="index.html">
+            Inicio
+        </a>
+
+        <span>|</span>
+
+        <a href="index.html#servicios">
+            Servicios
+        </a>
+
+        <span>|</span>
+
+        <a href="carnes.html">
+            Carnes
+        </a>
+
+        <span>|</span>
+
+        <a href="parrillas.html">
+            Parrillas
+        </a>
+
+        <span>|</span>
+
+        <a href="index.html#nosotros">
+            Quiénes somos
+        </a>
+
+    </nav>
+
+
+
+    <!-- CONTENIDO -->
+
+    <main class="seccion">
+
+        <h1 class="titulo-seccion">
+            Parrillas
+        </h1>
+
+
+        <p class="text-center fs-5 mb-5">
+
+            Encuentra la parrilla ideal
+            para disfrutar tus mejores asados.
+
+        </p>
+
+
+
+        <section class="productos">
+
+
+            <!-- CLÁSICA -->
+
+            <div class="card-producto">
+
+                <img
+                    src="https://via.placeholder.com/300x200?text=Parrilla+Clasica"
+                    alt="Parrilla Clásica"
+                >
+
+                <h3>
+                    Parrilla Clásica
+                </h3>
+
+                <p class="descripcion-producto">
+
+                    Parrilla tradicional a carbón,
+                    ideal para reuniones familiares
+                    y asados de fin de semana.
+
+                </p>
+
+                <p class="precio-producto">
+                    $79.990
+                </p>
+
+                <button
+                    class="btn btn-danger"
+                    onclick="agregarAlCarrito(
+                        'Parrilla Clásica',
+                        79990
+                    )"
+                >
+                    Agregar al carrito
+                </button>
+
+            </div>
+
+
+
+            <!-- PREMIUM -->
+
+            <div class="card-producto">
+
+                <img
+                    src="https://via.placeholder.com/300x200?text=Parrilla+Premium"
+                    alt="Parrilla Premium"
+                >
+
+                <h3>
+                    Parrilla Premium
+                </h3>
+
+                <p class="descripcion-producto">
+
+                    Parrilla de mayor tamaño,
+                    estructura reforzada y amplia
+                    superficie de cocción.
+
+                </p>
+
+                <p class="precio-producto">
+                    $129.990
+                </p>
+
+                <button
+                    class="btn btn-danger"
+                    onclick="agregarAlCarrito(
+                        'Parrilla Premium',
+                        129990
+                    )"
+                >
+                    Agregar al carrito
+                </button>
+
+            </div>
+
+
+
+            <!-- PORTÁTIL -->
+
+            <div class="card-producto">
+
+                <img
+                    src="https://via.placeholder.com/300x200?text=Parrilla+Portatil"
+                    alt="Parrilla Portátil"
+                >
+
+                <h3>
+                    Parrilla Portátil
+                </h3>
+
+                <p class="descripcion-producto">
+
+                    Compacta y fácil de transportar.
+                    Ideal para camping, viajes,
+                    terrazas y espacios pequeños.
+
+                </p>
+
+                <p class="precio-producto">
+                    $49.990
+                </p>
+
+                <button
+                    class="btn btn-danger"
+                    onclick="agregarAlCarrito(
+                        'Parrilla Portátil',
+                        49990
+                    )"
+                >
+                    Agregar al carrito
+                </button>
+
+            </div>
+
+
+
+            <!-- CARBÓN -->
+
+            <div class="card-producto">
+
+                <img
+                    src="https://via.placeholder.com/300x200?text=Parrilla+Carbon"
+                    alt="Parrilla a Carbón"
+                >
+
+                <h3>
+                    Parrilla a Carbón
+                </h3>
+
+                <p class="descripcion-producto">
+
+                    Diseñada para cocinar con carbón
+                    y conseguir el clásico sabor
+                    ahumado del asado tradicional.
+
+                </p>
+
+                <p class="precio-producto">
+                    $89.990
+                </p>
+
+                <button
+                    class="btn btn-danger"
+                    onclick="agregarAlCarrito(
+                        'Parrilla a Carbón',
+                        89990
+                    )"
+                >
+                    Agregar al carrito
+                </button>
+
+            </div>
+
+
+
+            <!-- GAS -->
+
+            <div class="card-producto">
+
+                <img
+                    src="https://via.placeholder.com/300x200?text=Parrilla+Gas"
+                    alt="Parrilla a Gas"
+                >
+
+                <h3>
+                    Parrilla a Gas
+                </h3>
+
+                <p class="descripcion-producto">
+
+                    Encendido rápido y control
+                    regulable de temperatura para
+                    cocinar cómodamente y de manera uniforme.
+
+                </p>
+
+                <p class="precio-producto">
+                    $199.990
+                </p>
+
+                <button
+                    class="btn btn-danger"
+                    onclick="agregarAlCarrito(
+                        'Parrilla a Gas',
+                        199990
+                    )"
+                >
+                    Agregar al carrito
+                </button>
+
+            </div>
+
+
+
+            <!-- TAMBOR -->
+
+            <div class="card-producto">
+
+                <img
+                    src="https://via.placeholder.com/300x200?text=Parrilla+Tambor"
+                    alt="Parrilla Tambor"
+                >
+
+                <h3>
+                    Parrilla Tambor
+                </h3>
+
+                <p class="descripcion-producto">
+
+                    Parrilla estilo tambor con
+                    gran capacidad, ideal para
+                    reuniones y asados numerosos.
+
+                </p>
+
+                <p class="precio-producto">
+                    $99.990
+                </p>
+
+                <button
+                    class="btn btn-danger"
+                    onclick="agregarAlCarrito(
+                        'Parrilla Tambor',
+                        99990
+                    )"
+                >
+                    Agregar al carrito
+                </button>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="pie-pagina">
+
+        <div>
+
+            <h2>
+                Ubicación
+            </h2>
+
+            <p>
+                Av. Ejemplo 1234, Santiago
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h2>
+                Contacto
+            </h2>
+
+            <p>
+                +56 9 1234 5678
+            </p>
+
+            <p>
+                carnes2026@gmail.com
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h2>
+                Redes sociales
+            </h2>
+
+            <p>
+                Instagram
+            </p>
+
+            <p>
+                Facebook
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- MODAL ACCESO -->
+
+    <div
+        class="modal fade"
+        id="myModal"
+        tabindex="-1"
+    >
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Acceder
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    >
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    <form>
+
+                        <div class="mb-3">
+
+                            <label
+                                for="email"
+                                class="form-label"
+                            >
+                                Correo electrónico
+                            </label>
+
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label
+                                for="password"
+                                class="form-label"
+                            >
+                                Contraseña
+                            </label>
+
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-danger"
+                        >
+                            Iniciar sesión
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- CARRITO -->
+
+    <script src="./assets/js/carrito.js"></script>
+
+
+    <!-- BOOTSTRAP -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    >
+    </script>
+
+
+</body>
+
+</html>
