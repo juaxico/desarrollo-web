@@ -29,8 +29,9 @@
 
 <body>
 
-
+    <!-- ====================================== -->
     <!-- ENCABEZADO -->
+    <!-- ====================================== -->
 
     <header class="encabezado">
 
@@ -47,11 +48,8 @@
                 href="carrito.html"
                 class="btn btn-outline-light"
             >
-
                 🛒 Carrito
-
                 (<span id="contador-carrito">0</span>)
-
             </a>
 
 
@@ -72,7 +70,9 @@
 
 
 
+    <!-- ====================================== -->
     <!-- MENÚ -->
+    <!-- ====================================== -->
 
     <nav class="menu-navegacion">
 
@@ -108,7 +108,9 @@
 
 
 
+    <!-- ====================================== -->
     <!-- CONTENIDO -->
+    <!-- ====================================== -->
 
     <main class="seccion">
 
@@ -117,22 +119,25 @@
         </h1>
 
 
-        <p class="text-center fs-5 mb-4">
+        <p class="text-center fs-5 mb-5">
 
             Conoce nuestra selección de carnes
             para preparar el mejor asado.
 
         </p>
 
-        <!-- ======================================== -->
+
+
+        <!-- ====================================== -->
         <!-- CARNES ROJAS -->
-        <!-- ======================================== -->
+        <!-- ====================================== -->
 
         <section id="carnes-rojas">
 
             <h2 class="titulo-categoria">
                 Carnes Rojas
             </h2>
+
 
             <p class="descripcion-categoria">
 
@@ -145,37 +150,35 @@
             <div class="productos mt-4">
 
 
-                <!-- LOMO VETADO -->
+                <!-- COSTILLAS DE VACUNO -->
 
                 <div class="card-producto">
 
                     <img
-                        src="https://via.placeholder.com/300x200?text=Lomo+Vetado"
-                        alt="Lomo Vetado"
+                        src="./assets/imagenes_productos/costillas de vacuno.png"
+                        alt="Costillas de Vacuno"
                     >
 
                     <h3>
-                        Lomo Vetado
+                        Costillas de Vacuno
                     </h3>
 
                     <p class="descripcion-producto">
 
-                        Corte jugoso y sabroso,
-                        caracterizado por una excelente
-                        infiltración de grasa. Ideal
-                        para preparar a la parrilla.
+                        Costillas ideales para una cocción lenta.
+                        Su carne queda tierna, jugosa y llena de sabor.
 
                     </p>
 
                     <p class="precio-producto">
-                        $18.000
+                        $15.000
                     </p>
 
                     <button
                         class="btn btn-danger"
                         onclick="agregarAlCarrito(
-                            'Lomo Vetado',
-                            18000
+                            'Costillas de Vacuno',
+                            15000
                         )"
                     >
                         Agregar al carrito
@@ -190,7 +193,7 @@
                 <div class="card-producto">
 
                     <img
-                        src="https://via.placeholder.com/300x200?text=Entrana"
+                        src="./assets/imagenes_productos/entraña.png"
                         alt="Entraña"
                     >
 
@@ -224,90 +227,12 @@
 
 
 
-                <!-- FILETE -->
-
-                <div class="card-producto">
-
-                    <img
-                        src="https://via.placeholder.com/300x200?text=Filete"
-                        alt="Filete"
-                    >
-
-                    <h3>
-                        Filete
-                    </h3>
-
-                    <p class="descripcion-producto">
-
-                        Uno de los cortes más tiernos
-                        del vacuno, con poca grasa y
-                        una textura suave y delicada.
-
-                    </p>
-
-                    <p class="precio-producto">
-                        $20.000
-                    </p>
-
-                    <button
-                        class="btn btn-danger"
-                        onclick="agregarAlCarrito(
-                            'Filete',
-                            20000
-                        )"
-                    >
-                        Agregar al carrito
-                    </button>
-
-                </div>
-
-
-
-                <!-- COSTILLAS -->
-
-                <div class="card-producto">
-
-                    <img
-                        src="https://via.placeholder.com/300x200?text=Costillas+Vacuno"
-                        alt="Costillas de Vacuno"
-                    >
-
-                    <h3>
-                        Costillas de Vacuno
-                    </h3>
-
-                    <p class="descripcion-producto">
-
-                        Costillas ideales para una
-                        cocción lenta. Su carne queda
-                        tierna, jugosa y llena de sabor.
-
-                    </p>
-
-                    <p class="precio-producto">
-                        $15.000
-                    </p>
-
-                    <button
-                        class="btn btn-danger"
-                        onclick="agregarAlCarrito(
-                            'Costillas de Vacuno',
-                            15000
-                        )"
-                    >
-                        Agregar al carrito
-                    </button>
-
-                </div>
-
-
-
                 <!-- ASADO DE TIRA -->
 
                 <div class="card-producto">
 
                     <img
-                        src="https://via.placeholder.com/300x200?text=Asado+de+Tira"
+                        src="./assets/imagenes_productos/asado de tiras.jpg"
                         alt="Asado de Tira"
                     >
 
@@ -317,9 +242,8 @@
 
                     <p class="descripcion-producto">
 
-                        Corte tradicional de parrilla
-                        que combina carne, grasa y hueso,
-                        entregando un sabor intenso.
+                        Corte tradicional de parrilla que combina
+                        carne, grasa y hueso, entregando un sabor intenso.
 
                     </p>
 
@@ -341,12 +265,89 @@
 
 
 
+                <!-- LOMO VETADO -->
+
+                <div class="card-producto">
+
+                    <img
+                        src="./assets/imagenes_productos/lomo vetado.png"
+                        alt="Lomo Vetado"
+                    >
+
+                    <h3>
+                        Lomo Vetado
+                    </h3>
+
+                    <p class="descripcion-producto">
+
+                        Corte jugoso y sabroso,
+                        caracterizado por una excelente
+                        infiltración de grasa.
+
+                    </p>
+
+                    <p class="precio-producto">
+                        $18.000
+                    </p>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="agregarAlCarrito(
+                            'Lomo Vetado',
+                            18000
+                        )"
+                    >
+                        Agregar al carrito
+                    </button>
+
+                </div>
+
+
+
+                <!-- FILETE -->
+
+                <div class="card-producto">
+
+                    <img
+                        src="./assets/imagenes_productos/filete.jpg"
+                        alt="Filete"
+                    >
+
+                    <h3>
+                        Filete
+                    </h3>
+
+                    <p class="descripcion-producto">
+
+                        Uno de los cortes más tiernos del vacuno,
+                        con poca grasa y una textura suave y delicada.
+
+                    </p>
+
+                    <p class="precio-producto">
+                        $20.000
+                    </p>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="agregarAlCarrito(
+                            'Filete',
+                            20000
+                        )"
+                    >
+                        Agregar al carrito
+                    </button>
+
+                </div>
+
+
+
                 <!-- PARRILLADA -->
 
                 <div class="card-producto">
 
                     <img
-                        src="https://via.placeholder.com/300x200?text=Parrillada"
+                        src="./assets/imagenes_productos/parrillada.jpg"
                         alt="Parrillada"
                     >
 
@@ -356,9 +357,8 @@
 
                     <p class="descripcion-producto">
 
-                        Selección de distintos cortes
-                        pensada para compartir y preparar
-                        un asado completo.
+                        Selección de distintos cortes pensada
+                        para compartir y preparar un asado completo.
 
                     </p>
 
@@ -378,26 +378,28 @@
 
                 </div>
 
-
             </div>
 
         </section>
 
 
 
+        <!-- SEPARADOR -->
+
         <hr class="separador-categorias">
 
 
 
-        <!-- ======================================== -->
+        <!-- ====================================== -->
         <!-- CARNES BLANCAS -->
-        <!-- ======================================== -->
+        <!-- ====================================== -->
 
         <section id="carnes-blancas">
 
             <h2 class="titulo-categoria">
                 Carnes Blancas
             </h2>
+
 
             <p class="descripcion-categoria">
 
@@ -411,90 +413,12 @@
             <div class="productos mt-4">
 
 
-                <!-- PECHUGA POLLO -->
+                <!-- ALITAS DE POLLO -->
 
                 <div class="card-producto">
 
                     <img
-                        src="https://via.placeholder.com/300x200?text=Pechuga+de+Pollo"
-                        alt="Pechuga de Pollo"
-                    >
-
-                    <h3>
-                        Pechuga de Pollo
-                    </h3>
-
-                    <p class="descripcion-producto">
-
-                        Pechuga fresca y magra,
-                        ideal para cocinar a la parrilla,
-                        al horno o a la plancha.
-
-                    </p>
-
-                    <p class="precio-producto">
-                        $8.990
-                    </p>
-
-                    <button
-                        class="btn btn-danger"
-                        onclick="agregarAlCarrito(
-                            'Pechuga de Pollo',
-                            8990
-                        )"
-                    >
-                        Agregar al carrito
-                    </button>
-
-                </div>
-
-
-
-                <!-- TRUTRO -->
-
-                <div class="card-producto">
-
-                    <img
-                        src="https://via.placeholder.com/300x200?text=Trutro+de+Pollo"
-                        alt="Trutro de Pollo"
-                    >
-
-                    <h3>
-                        Trutro de Pollo
-                    </h3>
-
-                    <p class="descripcion-producto">
-
-                        Corte jugoso y de gran sabor,
-                        especialmente recomendado para
-                        cocinar lentamente sobre la parrilla.
-
-                    </p>
-
-                    <p class="precio-producto">
-                        $7.990
-                    </p>
-
-                    <button
-                        class="btn btn-danger"
-                        onclick="agregarAlCarrito(
-                            'Trutro de Pollo',
-                            7990
-                        )"
-                    >
-                        Agregar al carrito
-                    </button>
-
-                </div>
-
-
-
-                <!-- ALITAS -->
-
-                <div class="card-producto">
-
-                    <img
-                        src="https://via.placeholder.com/300x200?text=Alitas+de+Pollo"
+                        src="./assets/imagenes_productos/alitas de pollo.png"
                         alt="Alitas de Pollo"
                     >
 
@@ -528,12 +452,90 @@
 
 
 
-                <!-- FILETE POLLO -->
+                <!-- TRUTRO DE POLLO -->
 
                 <div class="card-producto">
 
                     <img
-                        src="https://via.placeholder.com/300x200?text=Filete+de+Pollo"
+                        src="./assets/imagenes_productos/truto de pollo.jpg"
+                        alt="Trutro de Pollo"
+                    >
+
+                    <h3>
+                        Trutro de Pollo
+                    </h3>
+
+                    <p class="descripcion-producto">
+
+                        Corte jugoso y de gran sabor,
+                        especialmente recomendado para
+                        cocinar lentamente sobre la parrilla.
+
+                    </p>
+
+                    <p class="precio-producto">
+                        $7.990
+                    </p>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="agregarAlCarrito(
+                            'Trutro de Pollo',
+                            7990
+                        )"
+                    >
+                        Agregar al carrito
+                    </button>
+
+                </div>
+
+
+
+                <!-- PECHUGA DE POLLO -->
+
+                <div class="card-producto">
+
+                    <img
+                        src="./assets/imagenes_productos/PECHUGA.jpg"
+                        alt="Pechuga de Pollo"
+                    >
+
+                    <h3>
+                        Pechuga de Pollo
+                    </h3>
+
+                    <p class="descripcion-producto">
+
+                        Pechuga fresca y magra,
+                        ideal para cocinar a la parrilla,
+                        al horno o a la plancha.
+
+                    </p>
+
+                    <p class="precio-producto">
+                        $8.990
+                    </p>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="agregarAlCarrito(
+                            'Pechuga de Pollo',
+                            8990
+                        )"
+                    >
+                        Agregar al carrito
+                    </button>
+
+                </div>
+
+
+
+                <!-- FILETE DE POLLO -->
+
+                <div class="card-producto">
+
+                    <img
+                        src="./assets/imagenes_productos/filete de pollo.png"
                         alt="Filete de Pollo"
                     >
 
@@ -543,9 +545,8 @@
 
                     <p class="descripcion-producto">
 
-                        Filetes tiernos y fáciles
-                        de preparar. Ideales para
-                        una cocción rápida a la parrilla.
+                        Filetes tiernos y fáciles de preparar.
+                        Ideales para una cocción rápida a la parrilla.
 
                     </p>
 
@@ -567,51 +568,12 @@
 
 
 
-                <!-- PAVO -->
+                <!-- BROCHETAS DE POLLO -->
 
                 <div class="card-producto">
 
                     <img
-                        src="https://via.placeholder.com/300x200?text=Pechuga+de+Pavo"
-                        alt="Pechuga de Pavo"
-                    >
-
-                    <h3>
-                        Pechuga de Pavo
-                    </h3>
-
-                    <p class="descripcion-producto">
-
-                        Carne baja en grasa y de
-                        sabor suave. Excelente alternativa
-                        para preparaciones ligeras.
-
-                    </p>
-
-                    <p class="precio-producto">
-                        $11.990
-                    </p>
-
-                    <button
-                        class="btn btn-danger"
-                        onclick="agregarAlCarrito(
-                            'Pechuga de Pavo',
-                            11990
-                        )"
-                    >
-                        Agregar al carrito
-                    </button>
-
-                </div>
-
-
-
-                <!-- BROCHETAS -->
-
-                <div class="card-producto">
-
-                    <img
-                        src="https://via.placeholder.com/300x200?text=Brochetas+de+Pollo"
+                        src="./assets/imagenes_productos/brochetas de pollo.png"
                         alt="Brochetas de Pollo"
                     >
 
@@ -621,9 +583,8 @@
 
                     <p class="descripcion-producto">
 
-                        Trozos de pollo preparados
-                        en brochetas y listos para
-                        cocinar directamente a la parrilla.
+                        Trozos de pollo preparados en brochetas
+                        y listos para cocinar directamente a la parrilla.
 
                     </p>
 
@@ -644,6 +605,43 @@
                 </div>
 
 
+
+                <!-- PECHUGA DE PAVO -->
+
+                <div class="card-producto">
+
+                    <img
+                        src="./assets/imagenes_productos/pechuga de pavo.jpg"
+                        alt="Pechuga de Pavo"
+                    >
+
+                    <h3>
+                        Pechuga de Pavo
+                    </h3>
+
+                    <p class="descripcion-producto">
+
+                        Carne baja en grasa y de sabor suave.
+                        Excelente alternativa para preparaciones ligeras.
+
+                    </p>
+
+                    <p class="precio-producto">
+                        $11.990
+                    </p>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="agregarAlCarrito(
+                            'Pechuga de Pavo',
+                            11990
+                        )"
+                    >
+                        Agregar al carrito
+                    </button>
+
+                </div>
+
             </div>
 
         </section>
@@ -652,7 +650,9 @@
 
 
 
+    <!-- ====================================== -->
     <!-- FOOTER -->
+    <!-- ====================================== -->
 
     <footer class="pie-pagina">
 
@@ -706,7 +706,9 @@
 
 
 
+    <!-- ====================================== -->
     <!-- MODAL ACCESO -->
+    <!-- ====================================== -->
 
     <div
         class="modal fade"
@@ -795,18 +797,16 @@
 
 
 
-    <!-- CARRITO -->
+    <!-- ====================================== -->
+    <!-- JAVASCRIPT -->
+    <!-- ====================================== -->
 
     <script src="./assets/js/carrito.js"></script>
-
-
-    <!-- BOOTSTRAP -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     >
     </script>
-
 
 </body>
 

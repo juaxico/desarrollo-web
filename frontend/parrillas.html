@@ -13,11 +13,15 @@
     <title>Parrillas - El Asador</title>
 
 
+    <!-- Bootstrap -->
+
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
+
+    <!-- CSS propio -->
 
     <link
         rel="stylesheet"
@@ -40,6 +44,7 @@
 
 
         <div class="d-flex align-items-center gap-3">
+
 
             <!-- CARRITO -->
 
@@ -69,7 +74,6 @@
         </div>
 
     </header>
-
 
 
     <!-- MENÚ -->
@@ -107,7 +111,6 @@
     </nav>
 
 
-
     <!-- CONTENIDO -->
 
     <main class="seccion">
@@ -125,16 +128,17 @@
         </p>
 
 
+        <!-- PRODUCTOS -->
 
         <section class="productos">
 
 
-            <!-- CLÁSICA -->
+            <!-- PARRILLA CLÁSICA -->
 
             <div class="card-producto">
 
                 <img
-                    src="https://via.placeholder.com/300x200?text=Parrilla+Clasica"
+                    src="./assets/imagenes_productos/parrilla clasica.jfif"
                     alt="Parrilla Clásica"
                 >
 
@@ -167,13 +171,49 @@
             </div>
 
 
-
-            <!-- PREMIUM -->
+            <!-- PARRILLA TAMBOR -->
 
             <div class="card-producto">
 
                 <img
-                    src="https://via.placeholder.com/300x200?text=Parrilla+Premium"
+                    src="./assets/imagenes_productos/parrilla tambor.jfif"
+                    alt="Parrilla Tambor"
+                >
+
+                <h3>
+                    Parrilla Tambor
+                </h3>
+
+                <p class="descripcion-producto">
+
+                    Parrilla estilo tambor con gran capacidad,
+                    ideal para reuniones y asados numerosos.
+
+                </p>
+
+                <p class="precio-producto">
+                    $99.990
+                </p>
+
+                <button
+                    class="btn btn-danger"
+                    onclick="agregarAlCarrito(
+                        'Parrilla Tambor',
+                        99990
+                    )"
+                >
+                    Agregar al carrito
+                </button>
+
+            </div>
+
+
+            <!-- PARRILLA PREMIUM -->
+
+            <div class="card-producto">
+
+                <img
+                    src="./assets/imagenes_productos/parrilla premium.jfif"
                     alt="Parrilla Premium"
                 >
 
@@ -205,167 +245,9 @@
 
             </div>
 
-
-
-            <!-- PORTÁTIL -->
-
-            <div class="card-producto">
-
-                <img
-                    src="https://via.placeholder.com/300x200?text=Parrilla+Portatil"
-                    alt="Parrilla Portátil"
-                >
-
-                <h3>
-                    Parrilla Portátil
-                </h3>
-
-                <p class="descripcion-producto">
-
-                    Compacta y fácil de transportar.
-                    Ideal para camping, viajes,
-                    terrazas y espacios pequeños.
-
-                </p>
-
-                <p class="precio-producto">
-                    $49.990
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlCarrito(
-                        'Parrilla Portátil',
-                        49990
-                    )"
-                >
-                    Agregar al carrito
-                </button>
-
-            </div>
-
-
-
-            <!-- CARBÓN -->
-
-            <div class="card-producto">
-
-                <img
-                    src="https://via.placeholder.com/300x200?text=Parrilla+Carbon"
-                    alt="Parrilla a Carbón"
-                >
-
-                <h3>
-                    Parrilla a Carbón
-                </h3>
-
-                <p class="descripcion-producto">
-
-                    Diseñada para cocinar con carbón
-                    y conseguir el clásico sabor
-                    ahumado del asado tradicional.
-
-                </p>
-
-                <p class="precio-producto">
-                    $89.990
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlCarrito(
-                        'Parrilla a Carbón',
-                        89990
-                    )"
-                >
-                    Agregar al carrito
-                </button>
-
-            </div>
-
-
-
-            <!-- GAS -->
-
-            <div class="card-producto">
-
-                <img
-                    src="https://via.placeholder.com/300x200?text=Parrilla+Gas"
-                    alt="Parrilla a Gas"
-                >
-
-                <h3>
-                    Parrilla a Gas
-                </h3>
-
-                <p class="descripcion-producto">
-
-                    Encendido rápido y control
-                    regulable de temperatura para
-                    cocinar cómodamente y de manera uniforme.
-
-                </p>
-
-                <p class="precio-producto">
-                    $199.990
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlCarrito(
-                        'Parrilla a Gas',
-                        199990
-                    )"
-                >
-                    Agregar al carrito
-                </button>
-
-            </div>
-
-
-
-            <!-- TAMBOR -->
-
-            <div class="card-producto">
-
-                <img
-                    src="https://via.placeholder.com/300x200?text=Parrilla+Tambor"
-                    alt="Parrilla Tambor"
-                >
-
-                <h3>
-                    Parrilla Tambor
-                </h3>
-
-                <p class="descripcion-producto">
-
-                    Parrilla estilo tambor con
-                    gran capacidad, ideal para
-                    reuniones y asados numerosos.
-
-                </p>
-
-                <p class="precio-producto">
-                    $99.990
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlCarrito(
-                        'Parrilla Tambor',
-                        99990
-                    )"
-                >
-                    Agregar al carrito
-                </button>
-
-            </div>
-
-
         </section>
 
     </main>
-
 
 
     <!-- FOOTER -->
@@ -419,7 +301,6 @@
         </div>
 
     </footer>
-
 
 
     <!-- MODAL ACCESO -->
@@ -510,7 +391,6 @@
     </div>
 
 
-
     <!-- CARRITO -->
 
     <script src="./assets/js/carrito.js"></script>
@@ -522,7 +402,6 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     >
     </script>
-
 
 </body>
 
