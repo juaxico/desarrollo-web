@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -11,90 +12,131 @@
 
     <title>El Asador</title>
 
-    <!-- Bootstrap -->
+
+    <!-- ====================================== -->
+    <!-- GOOGLE FONTS -->
+    <!-- ====================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ====================================== -->
+    <!-- BOOTSTRAP -->
+    <!-- ====================================== -->
+
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-    <!-- CSS propio -->
+
+    <!-- ====================================== -->
+    <!-- CSS PROPIO -->
+    <!-- ====================================== -->
+
     <link
         rel="stylesheet"
         href="./assets/css/estilos.css"
     >
+
 </head>
 
 
 <body>
 
-    <!-- ENCABEZADO -->
-<header class="encabezado">
 
-    <div class="logo">
-        El Asador
-    </div>
+    <!-- ====================================== -->
+    <!-- HEADER TRANSPARENTE EN INICIO -->
+    <!-- ====================================== -->
 
-    <div class="d-flex align-items-center gap-3">
-
-        <!-- CARRITO -->
-        <a
-            href="carrito.html"
-            class="btn btn-outline-light"
-        >
-            🛒 Carrito
-            (<span id="contador-carrito">0</span>)
-        </a>
-
-        <!-- ACCEDER -->
-        <button
-            type="button"
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#myModal"
-        >
-            Acceder
-        </button>
-
-    </div>
-
-</header>
+    <header
+        class="encabezado encabezado-home"
+        id="headerPrincipal"
+    >
 
 
-    <!-- MENÚ -->
-    <nav class="menu-navegacion">
+        <!-- LOGO -->
 
-        <a href="index.html">
-            Inicio
-        </a>
-
-        <span>|</span>
-
-        <a href="#servicios">
-            Servicios
-        </a>
-
-        <span>|</span>
-
-        <a href="carnes.html">
-            Carnes
-        </a>
-
-        <span>|</span>
-
-        <a href="parrillas.html">
-            Parrillas
-        </a>
-
-        <span>|</span>
-
-        <a href="#nosotros">
-            Quiénes somos
-        </a>
-
-    </nav>
+        <div class="logo">
+            El Asador
+        </div>
 
 
-    <!-- PORTADA / HERO -->
+        <!-- MENÚ -->
+
+        <nav class="menu-navegacion">
+
+            <a href="index.html">
+                INICIO
+            </a>
+
+            <span>|</span>
+
+            <a href="cortes.html">
+                CORTES
+            </a>
+
+            <span>|</span>
+
+            <a href="parrillas.html">
+                PARRILLAS
+            </a>
+
+            <span>|</span>
+
+            <a href="#nosotros">
+                LA CASA
+            </a>
+
+        </nav>
+
+
+        <!-- Pedido + ACCESO -->
+
+        <div class="acciones-header">
+
+            <a
+                href="pedido.html"
+                class="btn btn-outline-light"
+            >
+                🛒 Pedido
+                (<span id="contador-pedido">0</span>)
+            </a>
+
+
+            <button
+                type="button"
+                class="btn btn-outline-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#myModal"
+            >
+                Acceder
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ====================================== -->
+    <!-- HERO -->
+    <!-- ====================================== -->
+
     <section class="hero">
 
         <div class="hero-contenido">
@@ -103,94 +145,32 @@
                 El Asador
             </h1>
 
+
             <h2>
-                Carnes seleccionadas para una parrilla perfecta
+                Cortes seleccionados para una parrilla perfecta
             </h2>
+
 
             <p>
                 Calidad, tradición y sabor para compartir en familia.
             </p>
 
-            <a
-                href="carnes.html"
-                class="btn btn-danger btn-lg"
-            >
-                Ver catálogo
-            </a>
 
-        </div>
-
-    </section>
-
-
-    <!-- SERVICIOS -->
-    <section
-        class="seccion"
-        id="servicios"
-    >
-
-        <h2 class="titulo-seccion">
-            Nuestros servicios
-        </h2>
-
-
-        <div class="servicios-grid">
-
-            <div class="servicio">
-
-                <h3>
-                    Carnes
-                </h3>
-
-                <p>
-                    Variedad de cortes seleccionados de vacuno y cerdo.
-                </p>
+            <div class="hero-botones">
 
                 <a
-                    href="carnes.html"
-                    class="btn btn-outline-danger"
+                    href="cortes.html"
+                    class="btn btn-danger btn-lg"
                 >
-                    Ver carnes
+                    CORTES
                 </a>
 
-            </div>
-
-
-            <div class="servicio">
-
-                <h3>
-                    Parrillas
-                </h3>
-
-                <p>
-                    Parrillas y accesorios para disfrutar el mejor asado.
-                </p>
 
                 <a
                     href="parrillas.html"
-                    class="btn btn-outline-danger"
+                    class="btn btn-danger btn-lg"
                 >
-                    Ver parrillas
-                </a>
-
-            </div>
-
-
-            <div class="servicio">
-
-                <h3>
-                    Delivery
-                </h3>
-
-                <p>
-                    Recibe nuestros productos directamente en tu hogar.
-                </p>
-
-                <a
-                    href="#contacto"
-                    class="btn btn-outline-danger"
-                >
-                    Consultar
+                    PARRILLAS
                 </a>
 
             </div>
@@ -200,20 +180,27 @@
     </section>
 
 
+
+    <!-- ====================================== -->
     <!-- PRODUCTOS DESTACADOS -->
+    <!-- ====================================== -->
+
     <section class="seccion destacados">
 
         <h2 class="titulo-seccion">
-            Productos destacados
+            Productos Destacados
         </h2>
 
 
         <div class="productos">
 
+
+            <!-- PARRILLADA -->
+
             <div class="card-producto">
 
                 <img
-                    src="https://via.placeholder.com/300x200?text=Parrillada"
+                    src="./assets/imagenes_productos/parrillada.jpg"
                     alt="Parrillada"
                 >
 
@@ -221,21 +208,27 @@
                     Parrillada
                 </h3>
 
-                <p>
+                <p class="precio-producto">
                     $45.000
                 </p>
 
-                <button class="btn btn-danger">
-                    Ver producto
+                <button
+                    class="btn btn-danger"
+                    onclick="agregarAlPedido('Parrillada', 45000)"
+                >
+                    Agregar al pedido
                 </button>
 
             </div>
 
 
+
+            <!-- LOMO VETADO -->
+
             <div class="card-producto">
 
                 <img
-                    src="https://via.placeholder.com/300x200?text=Lomo+Vetado"
+                    src="./assets/imagenes_productos/lomo vetado.png"
                     alt="Lomo Vetado"
                 >
 
@@ -243,41 +236,45 @@
                     Lomo Vetado
                 </h3>
 
-                <p>
+                <p class="precio-producto">
                     $18.000
                 </p>
 
                 <button
                     class="btn btn-danger"
-                    onclick="agregarAlCarrito('Lomo Vetado', 18000)"
+                    onclick="agregarAlPedido('Lomo Vetado', 18000)"
                 >
-                    Agregar al carrito
+                    Agregar al pedido
                 </button>
 
             </div>
 
 
+
+            <!-- COSTILLAS -->
+
             <div class="card-producto">
 
                 <img
-                    src="https://via.placeholder.com/300x200?text=Costillas"
-                    alt="Costillas"
+                    src="./assets/imagenes_productos/costillas de vacuno.png"
+                    alt="Costillas de Vacuno"
                 >
 
                 <h3>
-                    Costillas
+                    Costillas de Vacuno
                 </h3>
 
-                <p>
+                <p class="precio-producto">
                     $15.000
                 </p>
 
                 <button
                     class="btn btn-danger"
-                    onclick="agregarAlCarrito('Costillas', 15000)"
+                    onclick="agregarAlPedido('Costillas de Vacuno', 15000)"
                 >
-                    Agregar al carrito
+                    Agregar al pedido
                 </button>
+
             </div>
 
         </div>
@@ -285,7 +282,11 @@
     </section>
 
 
-    <!-- QUIÉNES SOMOS -->
+
+    <!-- ====================================== -->
+    <!-- LA CASA -->
+    <!-- ====================================== -->
+
     <section
         class="nosotros"
         id="nosotros"
@@ -294,32 +295,35 @@
         <div class="nosotros-contenido">
 
             <h2>
-                Quiénes somos
+                LA CASA
             </h2>
 
+
             <p>
-                En El Asador nos dedicamos a ofrecer productos
-                seleccionados para quienes disfrutan de una buena
-                parrilla.
+                En El Asador creemos que una buena parrilla comienza con productos de calidad y termina alrededor de una mesa compartida. Por eso seleccionamos cuidadosamente carnes y productos pensados para quienes disfrutan del sabor, la tradición y la experiencia de preparar un buen asado.
+            </p>
+
+
+            <p>
+                Nuestro propósito es ofrecer alternativas que combinen calidad, buen sabor y una atención cercana, facilitando que cada cliente encuentre los cortes y productos adecuados para sus reuniones, celebraciones y momentos en familia o con amigos.
             </p>
 
             <p>
-                Nuestro objetivo es entregar calidad, buen servicio
-                y productos pensados para compartir.
+                Más que vender carnes y parrillas, buscamos ser parte de esos momentos que se construyen alrededor del fuego, donde compartir, conversar y disfrutar se convierten en parte de la experiencia.
             </p>
+
 
         </div>
 
     </section>
 
 
-    <!-- CONTACTO -->
-    <footer
-        class="pie-pagina"
-        id="contacto"
-    >
 
-        <div class="ubicacion">
+    <!-- FOOTER -->
+
+    <footer class="pie-pagina">
+
+        <div>
 
             <h2>
                 Ubicación
@@ -332,7 +336,7 @@
         </div>
 
 
-        <div class="contacto">
+        <div>
 
             <h2>
                 Contacto
@@ -343,7 +347,7 @@
             </p>
 
             <p>
-                carnes2026@gmail.com
+                elasador2026@gmail.com
             </p>
 
         </div>
@@ -369,12 +373,14 @@
 
 
 
+    <!-- ====================================== -->
     <!-- MODAL ACCESO -->
+    <!-- ====================================== -->
+
     <div
         class="modal fade"
         id="myModal"
         tabindex="-1"
-        aria-hidden="true"
     >
 
         <div class="modal-dialog">
@@ -443,24 +449,6 @@
                         </div>
 
 
-                        <div class="form-check mb-3">
-
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="recordar"
-                            >
-
-                            <label
-                                class="form-check-label"
-                                for="recordar"
-                            >
-                                Recordarme
-                            </label>
-
-                        </div>
-
-
                         <button
                             type="submit"
                             class="btn btn-danger"
@@ -472,19 +460,6 @@
 
                 </div>
 
-
-                <div class="modal-footer">
-
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                    >
-                        Cerrar
-                    </button>
-
-                </div>
-
             </div>
 
         </div>
@@ -492,11 +467,60 @@
     </div>
 
 
-    <!-- Bootstrap JS -->
+
+    <!-- ====================================== -->
+    <!-- PEDIDO -->
+    <!-- ====================================== -->
+
+    <script src="./assets/js/pedido.js"></script>
+
+
+
+    <!-- ====================================== -->
+    <!-- BOOTSTRAP -->
+    <!-- ====================================== -->
+
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     >
     </script>
+
+
+
+    <!-- ====================================== -->
+    <!-- EFECTO HEADER AL HACER SCROLL -->
+    <!-- ====================================== -->
+
+    <script>
+
+        const header = document.getElementById("headerPrincipal");
+
+
+        function actualizarHeader() {
+
+            if (window.scrollY > 50) {
+
+                header.classList.add("header-scroll");
+
+            } else {
+
+                header.classList.remove("header-scroll");
+
+            }
+
+        }
+
+
+        window.addEventListener(
+            "scroll",
+            actualizarHeader
+        );
+
+
+        actualizarHeader();
+
+    </script>
+
 
 </body>
 

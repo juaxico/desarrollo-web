@@ -10,50 +10,260 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Carnes - El Asador</title>
+    <title>CORTES - EL ASADOR</title>
 
-    <!-- Bootstrap -->
+
+    <!-- ====================================== -->
+    <!-- GOOGLE FONTS -->
+    <!-- ====================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ====================================== -->
+    <!-- BOOTSTRAP -->
+    <!-- ====================================== -->
+
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-    <!-- CSS propio -->
+
+    <!-- ====================================== -->
+    <!-- CSS GENERAL -->
+    <!-- ====================================== -->
+
     <link
         rel="stylesheet"
         href="./assets/css/estilos.css"
     >
+
+
+    <!-- ====================================== -->
+    <!-- ESTILOS ESPECÍFICOS DE CORTES -->
+    <!-- ====================================== -->
+
+    <style>
+
+        /* ===================================== */
+        /* HEADER FIJO                           */
+        /* ===================================== */
+
+        .encabezado-cortes {
+            position: sticky;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+
+            z-index: 1000;
+
+            transition:
+                box-shadow 0.4s ease,
+                background-color 0.4s ease;
+        }
+
+
+        /* ===================================== */
+        /* LÍNEA ANIMADA DEL HEADER              */
+        /* ===================================== */
+
+        .encabezado-cortes::after {
+            content: "";
+
+            position: absolute;
+
+            bottom: 0;
+            left: 50%;
+
+            width: 90%;
+            height: 1px;
+
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.60),
+                transparent
+            );
+
+            transform:
+                translateX(-50%)
+                scaleX(0);
+
+            transform-origin: center;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition:
+                transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.40s ease;
+        }
+
+
+        /* HEADER DESPUÉS DE BAJAR */
+
+        .encabezado-cortes.header-scroll {
+            background-color: rgba(17, 17, 17, 0.98);
+
+            box-shadow:
+                0 4px 20px
+                rgba(0, 0, 0, 0.45);
+        }
+
+
+        /* APARICIÓN DE LA LÍNEA */
+
+        .encabezado-cortes.header-scroll::after {
+            transform:
+                translateX(-50%)
+                scaleX(1);
+
+            opacity: 1;
+
+            transition:
+                transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.20s,
+                opacity 0.40s ease 0.20s;
+        }
+
+
+        /* ===================================== */
+        /* LÍNEA ENTRE CARNES                    */
+        /* ===================================== */
+
+        .separador-categorias {
+            width: 90%;
+
+            height: 1px;
+
+            margin: 80px auto;
+
+            border: 0;
+
+            opacity: 1;
+
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.55),
+                transparent
+            );
+        }
+
+
+        /* ===================================== */
+        /* LÍNEA ANTES DEL FOOTER                */
+        /* ===================================== */
+
+        .pie-pagina {
+            position: relative;
+        }
+
+
+        .pie-pagina::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: 90%;
+            height: 1px;
+
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.55),
+                transparent
+            );
+        }
+
+    </style>
 
 </head>
 
 
 <body>
 
+
     <!-- ====================================== -->
-    <!-- ENCABEZADO -->
+    <!-- ENCABEZADO + NAVBAR -->
     <!-- ====================================== -->
 
-    <header class="encabezado">
+    <header
+        class="encabezado encabezado-cortes"
+        id="headerCortes"
+    >
+
+
+        <!-- LOGO -->
 
         <div class="logo">
             El Asador
         </div>
 
 
-        <div class="d-flex align-items-center gap-3">
+        <!-- MENÚ -->
 
-            <!-- CARRITO -->
+        <nav class="menu-navegacion">
 
-            <a
-                href="carrito.html"
-                class="btn btn-outline-light"
-            >
-                🛒 Carrito
-                (<span id="contador-carrito">0</span>)
+            <a href="index.html">
+                INICIO
             </a>
 
+            <span>|</span>
 
-            <!-- ACCEDER -->
+            <a href="cortes.html">
+                CORTES
+            </a>
+
+            <span>|</span>
+
+            <a href="parrillas.html">
+                PARRILLAS
+            </a>
+
+            <span>|</span>
+
+            <a href="index.html#nosotros">
+                LA CASA
+            </a>
+
+        </nav>
+
+
+        <!-- PEDIDO + ACCESO -->
+
+        <div class="acciones-header">
+
+            <a
+                href="pedido.html"
+                class="btn btn-outline-light"
+            >
+                🛒 Pedido
+                (<span id="contador-pedido">0</span>)
+            </a>
+
 
             <button
                 type="button"
@@ -71,61 +281,10 @@
 
 
     <!-- ====================================== -->
-    <!-- MENÚ -->
-    <!-- ====================================== -->
-
-    <nav class="menu-navegacion">
-
-        <a href="index.html">
-            Inicio
-        </a>
-
-        <span>|</span>
-
-        <a href="index.html#servicios">
-            Servicios
-        </a>
-
-        <span>|</span>
-
-        <a href="carnes.html">
-            Carnes
-        </a>
-
-        <span>|</span>
-
-        <a href="parrillas.html">
-            Parrillas
-        </a>
-
-        <span>|</span>
-
-        <a href="index.html#nosotros">
-            Quiénes somos
-        </a>
-
-    </nav>
-
-
-
-    <!-- ====================================== -->
     <!-- CONTENIDO -->
     <!-- ====================================== -->
 
     <main class="seccion">
-
-        <h1 class="titulo-seccion">
-            Catálogo de Carnes
-        </h1>
-
-
-        <p class="text-center fs-5 mb-5">
-
-            Conoce nuestra selección de carnes
-            para preparar el mejor asado.
-
-        </p>
-
 
 
         <!-- ====================================== -->
@@ -133,6 +292,7 @@
         <!-- ====================================== -->
 
         <section id="carnes-rojas">
+
 
             <h2 class="titulo-categoria">
                 Carnes Rojas
@@ -150,7 +310,9 @@
             <div class="productos mt-4">
 
 
+                <!-- ====================================== -->
                 <!-- COSTILLAS DE VACUNO -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -176,19 +338,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Costillas de Vacuno',
                             15000
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- ENTRAÑA -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -215,19 +379,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Entraña',
                             16000
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- ASADO DE TIRA -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -253,19 +419,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Asado de Tira',
                             17000
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- LOMO VETADO -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -292,19 +460,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Lomo Vetado',
                             18000
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- FILETE -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -330,19 +500,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Filete',
                             20000
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- PARRILLADA -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -368,12 +540,12 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Parrillada',
                             45000
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
@@ -384,7 +556,9 @@
 
 
 
-        <!-- SEPARADOR -->
+        <!-- ====================================== -->
+        <!-- LÍNEA ENTRE CARNES -->
+        <!-- ====================================== -->
 
         <hr class="separador-categorias">
 
@@ -395,6 +569,7 @@
         <!-- ====================================== -->
 
         <section id="carnes-blancas">
+
 
             <h2 class="titulo-categoria">
                 Carnes Blancas
@@ -413,7 +588,9 @@
             <div class="productos mt-4">
 
 
+                <!-- ====================================== -->
                 <!-- ALITAS DE POLLO -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -440,19 +617,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Alitas de Pollo',
                             6990
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- TRUTRO DE POLLO -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -479,19 +658,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Trutro de Pollo',
                             7990
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- PECHUGA DE POLLO -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -518,19 +699,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Pechuga de Pollo',
                             8990
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- FILETE DE POLLO -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -556,19 +739,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Filete de Pollo',
                             9990
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- BROCHETAS DE POLLO -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -594,19 +779,21 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Brochetas de Pollo',
                             10990
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
 
 
 
+                <!-- ====================================== -->
                 <!-- PECHUGA DE PAVO -->
+                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -632,12 +819,12 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlCarrito(
+                        onclick="agregarAlPedido(
                             'Pechuga de Pavo',
                             11990
                         )"
                     >
-                        Agregar al carrito
+                        Agregar al pedido
                     </button>
 
                 </div>
@@ -650,9 +837,7 @@
 
 
 
-    <!-- ====================================== -->
     <!-- FOOTER -->
-    <!-- ====================================== -->
 
     <footer class="pie-pagina">
 
@@ -680,7 +865,7 @@
             </p>
 
             <p>
-                carnes2026@gmail.com
+                elasador2026@gmail.com
             </p>
 
         </div>
@@ -730,6 +915,7 @@
                         type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
+                        aria-label="Cerrar"
                     >
                     </button>
 
@@ -798,15 +984,63 @@
 
 
     <!-- ====================================== -->
-    <!-- JAVASCRIPT -->
+    <!-- PEDIDO -->
     <!-- ====================================== -->
 
-    <script src="./assets/js/carrito.js"></script>
+    <script src="./assets/js/pedido.js"></script>
+
+
+
+    <!-- ====================================== -->
+    <!-- BOOTSTRAP -->
+    <!-- ====================================== -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     >
     </script>
+
+
+
+    <!-- ====================================== -->
+    <!-- ANIMACIÓN DE LÍNEA DEL HEADER -->
+    <!-- ====================================== -->
+
+    <script>
+
+        const headerCortes =
+            document.getElementById("headerCortes");
+
+
+        function actualizarHeaderCortes() {
+
+            if (window.scrollY > 40) {
+
+                headerCortes.classList.add(
+                    "header-scroll"
+                );
+
+            } else {
+
+                headerCortes.classList.remove(
+                    "header-scroll"
+                );
+
+            }
+
+        }
+
+
+        window.addEventListener(
+            "scroll",
+            actualizarHeaderCortes
+        );
+
+
+        actualizarHeaderCortes();
+
+    </script>
+
 
 </body>
 
