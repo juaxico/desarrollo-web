@@ -1,25 +1,25 @@
 // ==========================================
-// OBTENER CARRITO
+// OBTENER PEDIDO
 // ==========================================
 
-function obtenerCarrito() {
+function obtenerPedido() {
 
     return JSON.parse(
-        localStorage.getItem("carrito")
+        localStorage.getItem("pedido")
     ) || [];
 
 }
 
 
 // ==========================================
-// GUARDAR CARRITO
+// GUARDAR PEDIDO
 // ==========================================
 
-function guardarCarrito(carrito) {
+function guardarPedido(pedido) {
 
     localStorage.setItem(
-        "carrito",
-        JSON.stringify(carrito)
+        "pedido",
+        JSON.stringify(pedido)
     );
 
 }
@@ -29,11 +29,11 @@ function guardarCarrito(carrito) {
 // ALERTA BOOTSTRAP
 // ==========================================
 
-function mostrarAlertaCarrito(nombre) {
+function mostrarAlertaPedido(nombre) {
 
     // Busca el contenedor de alertas
     let contenedor =
-        document.getElementById("alertas-carrito");
+        document.getElementById("alertas-pedido");
 
 
     // Si no existe, lo crea automáticamente
@@ -43,7 +43,7 @@ function mostrarAlertaCarrito(nombre) {
             document.createElement("div");
 
         contenedor.id =
-            "alertas-carrito";
+            "alertas-pedido";
 
         contenedor.className =
             "position-fixed top-0 end-0 p-3";
@@ -87,7 +87,7 @@ function mostrarAlertaCarrito(nombre) {
 
         <br>
 
-        ${nombre} fue agregado al carrito.
+        ${nombre} fue agregado al pedido.
 
         <button
             type="button"
@@ -100,13 +100,13 @@ function mostrarAlertaCarrito(nombre) {
     `;
 
 
-    // Agrega la alerta al contenedor
+    // Agrega la alerta
     contenedor.appendChild(
         alerta
     );
 
 
-    // La alerta desaparece después de 3 segundos
+    // Desaparece después de 3 segundos
     setTimeout(() => {
 
         alerta.classList.remove(
@@ -126,21 +126,21 @@ function mostrarAlertaCarrito(nombre) {
 
 
 // ==========================================
-// AGREGAR PRODUCTO AL CARRITO
+// AGREGAR PRODUCTO AL PEDIDO
 // ==========================================
 
-function agregarAlCarrito(
+function agregarAlPedido(
     nombre,
     precio
 ) {
 
-    const carrito =
-        obtenerCarrito();
+    const pedido =
+        obtenerPedido();
 
 
     // Busca si el producto ya existe
     const productoExistente =
-        carrito.find(
+        pedido.find(
 
             producto =>
                 producto.nombre === nombre
@@ -148,17 +148,17 @@ function agregarAlCarrito(
         );
 
 
-    // Si ya existe, aumenta la cantidad
+    // Si existe aumenta la cantidad
     if (productoExistente) {
 
         productoExistente.cantidad++;
 
     }
 
-    // Si no existe, lo agrega
+    // Si no existe lo agrega
     else {
 
-        carrito.push({
+        pedido.push({
 
             nombre: nombre,
 
@@ -172,17 +172,17 @@ function agregarAlCarrito(
 
 
     // Guarda los cambios
-    guardarCarrito(
-        carrito
+    guardarPedido(
+        pedido
     );
 
 
-    // Actualiza número del carrito
-    actualizarContadorCarrito();
+    // Actualiza contador
+    actualizarContadorPedido();
 
 
-    // Muestra alerta Bootstrap
-    mostrarAlertaCarrito(
+    // Muestra alerta
+    mostrarAlertaPedido(
         nombre
     );
 
@@ -195,24 +195,25 @@ function agregarAlCarrito(
 
 function eliminarProducto(indice) {
 
-    const carrito =
-        obtenerCarrito();
+    const pedido =
+        obtenerPedido();
 
 
-    carrito.splice(
+    pedido.splice(
         indice,
         1
     );
 
 
-    guardarCarrito(
-        carrito
+    guardarPedido(
+        pedido
     );
 
 
-    mostrarCarrito();
+    mostrarPedido();
 
-    actualizarContadorCarrito();
+
+    actualizarContadorPedido();
 
 }
 
@@ -226,19 +227,20 @@ function cambiarCantidad(
     nuevaCantidad
 ) {
 
-    const carrito =
-        obtenerCarrito();
+    const pedido =
+        obtenerPedido();
 
 
     nuevaCantidad =
         Number(nuevaCantidad);
 
 
-    // Si la cantidad llega a 0,
+    // Si la cantidad llega a 0
     // elimina el producto
+
     if (nuevaCantidad <= 0) {
 
-        carrito.splice(
+        pedido.splice(
             indice,
             1
         );
@@ -247,38 +249,52 @@ function cambiarCantidad(
 
     else {
 
-        carrito[indice].cantidad =
+        pedido[indice].cantidad =
             nuevaCantidad;
 
     }
 
 
-    guardarCarrito(
-        carrito
+    guardarPedido(
+        pedido
     );
 
 
-    mostrarCarrito();
+    mostrarPedido();
 
-    actualizarContadorCarrito();
+
+    actualizarContadorPedido();
 
 }
 
 
 // ==========================================
-// MOSTRAR PRODUCTOS EN carrito.html
+// MOSTRAR PRODUCTOS EN pedido.html
 // ==========================================
 
-function mostrarCarrito() {
+function mostrarPedido() {
+
+    /*
+        Primero busca lista-pedido.
+
+        También dejamos lista-carrito
+        como respaldo por si tu pedido.html
+        todavía conserva el ID antiguo.
+    */
 
     const contenedor =
+        document.getElementById(
+            "lista-pedido"
+        ) ||
         document.getElementById(
             "lista-carrito"
         );
 
 
-    // Si no estamos en carrito.html
-    // termina la función
+    // Si estamos en index, cortes o parrillas
+    // este contenedor no existe.
+    // No pasa nada: termina la función.
+
     if (!contenedor) {
 
         return;
@@ -286,11 +302,14 @@ function mostrarCarrito() {
     }
 
 
-    const carrito =
-        obtenerCarrito();
+    const pedido =
+        obtenerPedido();
 
 
     const subtotalElemento =
+        document.getElementById(
+            "subtotal-pedido"
+        ) ||
         document.getElementById(
             "subtotal-carrito"
         );
@@ -298,11 +317,14 @@ function mostrarCarrito() {
 
     const totalElemento =
         document.getElementById(
+            "total-pedido"
+        ) ||
+        document.getElementById(
             "total-carrito"
         );
 
 
-    // Limpia el contenido anterior
+    // Limpia contenido anterior
     contenedor.innerHTML = "";
 
 
@@ -310,10 +332,10 @@ function mostrarCarrito() {
 
 
     // ======================================
-    // CARRITO VACÍO
+    // PEDIDO VACÍO
     // ======================================
 
-    if (carrito.length === 0) {
+    if (pedido.length === 0) {
 
         contenedor.innerHTML = `
 
@@ -321,7 +343,7 @@ function mostrarCarrito() {
                 class="alert alert-secondary text-center"
             >
 
-                Tu carrito está vacío.
+                Tu pedido está vacío.
 
             </div>
 
@@ -349,12 +371,12 @@ function mostrarCarrito() {
     }
 
 
-
     // ======================================
     // MOSTRAR CADA PRODUCTO
     // ======================================
 
-    carrito.forEach(
+    pedido.forEach(
+
         (producto, indice) => {
 
 
@@ -378,6 +400,7 @@ function mostrarCarrito() {
                                 d-flex
                                 justify-content-between
                                 align-items-start
+                                gap-3
                             "
                         >
 
@@ -385,9 +408,7 @@ function mostrarCarrito() {
                             <div>
 
                                 <h4>
-
                                     ${producto.nombre}
-
                                 </h4>
 
 
@@ -408,7 +429,6 @@ function mostrarCarrito() {
                             </div>
 
 
-
                             <button
                                 class="
                                     btn
@@ -426,9 +446,7 @@ function mostrarCarrito() {
 
                             </button>
 
-
                         </div>
-
 
 
                         <div
@@ -440,9 +458,7 @@ function mostrarCarrito() {
                         >
 
                             <label>
-
                                 Cantidad:
-
                             </label>
 
 
@@ -468,7 +484,6 @@ function mostrarCarrito() {
                         </div>
 
 
-
                         <p class="mt-3">
 
                             Subtotal:
@@ -485,7 +500,6 @@ function mostrarCarrito() {
 
                         </p>
 
-
                     </div>
 
                 </div>
@@ -493,8 +507,8 @@ function mostrarCarrito() {
             `;
 
         }
-    );
 
+    );
 
 
     // ======================================
@@ -511,7 +525,6 @@ function mostrarCarrito() {
             );
 
     }
-
 
 
     // ======================================
@@ -533,31 +546,33 @@ function mostrarCarrito() {
 
 
 // ==========================================
-// CONTADOR DEL CARRITO
+// CONTADOR DEL PEDIDO
 // ==========================================
 
-function actualizarContadorCarrito() {
+function actualizarContadorPedido() {
 
-    const carrito =
-        obtenerCarrito();
+    const pedido =
+        obtenerPedido();
 
 
     let cantidadTotal = 0;
 
 
-    carrito.forEach(
+    pedido.forEach(
+
         producto => {
 
             cantidadTotal +=
                 producto.cantidad;
 
         }
+
     );
 
 
     const contador =
         document.getElementById(
-            "contador-carrito"
+            "contador-pedido"
         );
 
 
@@ -572,38 +587,42 @@ function actualizarContadorCarrito() {
 
 
 // ==========================================
-// VACIAR CARRITO COMPLETO
+// VACIAR PEDIDO COMPLETO
 // ==========================================
 
-function vaciarCarrito() {
+function vaciarPedido() {
 
     localStorage.removeItem(
-        "carrito"
+        "pedido"
     );
 
 
-    mostrarCarrito();
+    mostrarPedido();
 
-    actualizarContadorCarrito();
+
+    actualizarContadorPedido();
 
 }
 
 
 // ==========================================
-// HACER LAS FUNCIONES ACCESIBLES DESDE HTML
+// HACER FUNCIONES ACCESIBLES DESDE HTML
 // ==========================================
 
-window.agregarAlCarrito =
-    agregarAlCarrito;
+window.agregarAlPedido =
+    agregarAlPedido;
+
 
 window.eliminarProducto =
     eliminarProducto;
 
+
 window.cambiarCantidad =
     cambiarCantidad;
 
-window.vaciarCarrito =
-    vaciarCarrito;
+
+window.vaciarPedido =
+    vaciarPedido;
 
 
 // ==========================================
@@ -611,12 +630,16 @@ window.vaciarCarrito =
 // ==========================================
 
 document.addEventListener(
+
     "DOMContentLoaded",
+
     function () {
 
-        mostrarCarrito();
+        mostrarPedido();
 
-        actualizarContadorCarrito();
+
+        actualizarContadorPedido();
 
     }
+
 );

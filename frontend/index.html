@@ -13,9 +13,7 @@
     <title>El Asador</title>
 
 
-    <!-- ====================================== -->
     <!-- GOOGLE FONTS -->
-    <!-- ====================================== -->
 
     <link
         rel="preconnect"
@@ -34,9 +32,7 @@
     >
 
 
-    <!-- ====================================== -->
     <!-- BOOTSTRAP -->
-    <!-- ====================================== -->
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
@@ -44,9 +40,7 @@
     >
 
 
-    <!-- ====================================== -->
-    <!-- CSS PROPIO -->
-    <!-- ====================================== -->
+    <!-- CSS -->
 
     <link
         rel="stylesheet"
@@ -60,7 +54,7 @@
 
 
     <!-- ====================================== -->
-    <!-- HEADER TRANSPARENTE EN INICIO -->
+    <!-- HEADER -->
     <!-- ====================================== -->
 
     <header
@@ -72,7 +66,17 @@
         <!-- LOGO -->
 
         <div class="logo">
-            El Asador
+
+            <a href="index.html">
+
+                <img
+                    src="./assets/imagenes_productos/logo minimalista.png"
+                    alt="Logo El Asador"
+                    class="logo-imagen"
+                >
+
+            </a>
+
         </div>
 
 
@@ -105,7 +109,7 @@
         </nav>
 
 
-        <!-- Pedido + ACCESO -->
+        <!-- PEDIDO + ACCESO -->
 
         <div class="acciones-header">
 
@@ -141,6 +145,7 @@
 
         <div class="hero-contenido">
 
+
             <h1>
                 El Asador
             </h1>
@@ -160,7 +165,7 @@
 
                 <a
                     href="cortes.html"
-                    class="btn btn-danger btn-lg"
+                    class="btn"
                 >
                     CORTES
                 </a>
@@ -168,7 +173,7 @@
 
                 <a
                     href="parrillas.html"
-                    class="btn btn-danger btn-lg"
+                    class="btn"
                 >
                     PARRILLAS
                 </a>
@@ -222,7 +227,6 @@
             </div>
 
 
-
             <!-- LOMO VETADO -->
 
             <div class="card-producto">
@@ -248,7 +252,6 @@
                 </button>
 
             </div>
-
 
 
             <!-- COSTILLAS -->
@@ -277,6 +280,7 @@
 
             </div>
 
+
         </div>
 
     </section>
@@ -298,20 +302,29 @@
                 LA CASA
             </h2>
 
-
             <p>
-                En El Asador creemos que una buena parrilla comienza con productos de calidad y termina alrededor de una mesa compartida. Por eso seleccionamos cuidadosamente carnes y productos pensados para quienes disfrutan del sabor, la tradición y la experiencia de preparar un buen asado.
+                En El Asador creemos que una buena parrilla comienza
+                con productos de calidad y termina alrededor de una
+                mesa compartida. Por eso seleccionamos cuidadosamente
+                carnes y productos pensados para quienes disfrutan del
+                sabor, la tradición y la experiencia de preparar un
+                buen asado.
             </p>
 
-
             <p>
-                Nuestro propósito es ofrecer alternativas que combinen calidad, buen sabor y una atención cercana, facilitando que cada cliente encuentre los cortes y productos adecuados para sus reuniones, celebraciones y momentos en familia o con amigos.
+                Nuestro propósito es ofrecer alternativas que combinen
+                calidad, buen sabor y una atención cercana, facilitando
+                que cada cliente encuentre los cortes y productos
+                adecuados para sus reuniones, celebraciones y momentos
+                en familia o con amigos.
             </p>
 
             <p>
-                Más que vender carnes y parrillas, buscamos ser parte de esos momentos que se construyen alrededor del fuego, donde compartir, conversar y disfrutar se convierten en parte de la experiencia.
+                Más que vender carnes y parrillas, buscamos ser parte
+                de esos momentos que se construyen alrededor del fuego,
+                donde compartir, conversar y disfrutar se convierten
+                en parte de la experiencia.
             </p>
-
 
         </div>
 
@@ -319,7 +332,9 @@
 
 
 
+    <!-- ====================================== -->
     <!-- FOOTER -->
+    <!-- ====================================== -->
 
     <footer class="pie-pagina">
 
@@ -386,7 +401,6 @@
         <div class="modal-dialog">
 
             <div class="modal-content">
-
 
                 <div class="modal-header">
 
@@ -468,32 +482,24 @@
 
 
 
-    <!-- ====================================== -->
+    <!-- BOOTSTRAP -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+
     <!-- PEDIDO -->
-    <!-- ====================================== -->
 
     <script src="./assets/js/pedido.js"></script>
 
 
-
-    <!-- ====================================== -->
-    <!-- BOOTSTRAP -->
-    <!-- ====================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    >
-    </script>
-
-
-
-    <!-- ====================================== -->
-    <!-- EFECTO HEADER AL HACER SCROLL -->
-    <!-- ====================================== -->
+    <!-- HEADER AL HACER SCROLL -->
 
     <script>
 
-        const header = document.getElementById("headerPrincipal");
+        const header =
+            document.getElementById("headerPrincipal");
 
 
         function actualizarHeader() {

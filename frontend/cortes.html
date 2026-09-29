@@ -10,12 +10,8 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>CORTES - EL ASADOR</title>
+    <title>Cortes - El Asador</title>
 
-
-    <!-- ====================================== -->
-    <!-- GOOGLE FONTS -->
-    <!-- ====================================== -->
 
     <link
         rel="preconnect"
@@ -34,171 +30,16 @@
     >
 
 
-    <!-- ====================================== -->
-    <!-- BOOTSTRAP -->
-    <!-- ====================================== -->
-
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
 
-    <!-- ====================================== -->
-    <!-- CSS GENERAL -->
-    <!-- ====================================== -->
-
     <link
         rel="stylesheet"
         href="./assets/css/estilos.css"
     >
-
-
-    <!-- ====================================== -->
-    <!-- ESTILOS ESPECÍFICOS DE CORTES -->
-    <!-- ====================================== -->
-
-    <style>
-
-        /* ===================================== */
-        /* HEADER FIJO                           */
-        /* ===================================== */
-
-        .encabezado-cortes {
-            position: sticky;
-
-            top: 0;
-            left: 0;
-
-            width: 100%;
-
-            z-index: 1000;
-
-            transition:
-                box-shadow 0.4s ease,
-                background-color 0.4s ease;
-        }
-
-
-        /* ===================================== */
-        /* LÍNEA ANIMADA DEL HEADER              */
-        /* ===================================== */
-
-        .encabezado-cortes::after {
-            content: "";
-
-            position: absolute;
-
-            bottom: 0;
-            left: 50%;
-
-            width: 90%;
-            height: 1px;
-
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.60),
-                transparent
-            );
-
-            transform:
-                translateX(-50%)
-                scaleX(0);
-
-            transform-origin: center;
-
-            opacity: 0;
-
-            pointer-events: none;
-
-            transition:
-                transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 0.40s ease;
-        }
-
-
-        /* HEADER DESPUÉS DE BAJAR */
-
-        .encabezado-cortes.header-scroll {
-            background-color: rgba(17, 17, 17, 0.98);
-
-            box-shadow:
-                0 4px 20px
-                rgba(0, 0, 0, 0.45);
-        }
-
-
-        /* APARICIÓN DE LA LÍNEA */
-
-        .encabezado-cortes.header-scroll::after {
-            transform:
-                translateX(-50%)
-                scaleX(1);
-
-            opacity: 1;
-
-            transition:
-                transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.20s,
-                opacity 0.40s ease 0.20s;
-        }
-
-
-        /* ===================================== */
-        /* LÍNEA ENTRE CARNES                    */
-        /* ===================================== */
-
-        .separador-categorias {
-            width: 90%;
-
-            height: 1px;
-
-            margin: 80px auto;
-
-            border: 0;
-
-            opacity: 1;
-
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.55),
-                transparent
-            );
-        }
-
-
-        /* ===================================== */
-        /* LÍNEA ANTES DEL FOOTER                */
-        /* ===================================== */
-
-        .pie-pagina {
-            position: relative;
-        }
-
-
-        .pie-pagina::before {
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 50%;
-
-            transform: translateX(-50%);
-
-            width: 90%;
-            height: 1px;
-
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.55),
-                transparent
-            );
-        }
-
-    </style>
 
 </head>
 
@@ -207,23 +48,28 @@
 
 
     <!-- ====================================== -->
-    <!-- ENCABEZADO + NAVBAR -->
+    <!-- HEADER -->
     <!-- ====================================== -->
 
     <header
-        class="encabezado encabezado-cortes"
-        id="headerCortes"
+        class="encabezado encabezado-interno"
+        id="headerPrincipal"
     >
 
-
-        <!-- LOGO -->
-
         <div class="logo">
-            El Asador
+
+            <a href="index.html">
+
+                <img
+                    src="./assets/imagenes_productos/logo minimalista.png"
+                    alt="Logo El Asador"
+                    class="logo-imagen"
+                >
+
+            </a>
+
         </div>
 
-
-        <!-- MENÚ -->
 
         <nav class="menu-navegacion">
 
@@ -252,8 +98,6 @@
         </nav>
 
 
-        <!-- PEDIDO + ACCESO -->
-
         <div class="acciones-header">
 
             <a
@@ -281,38 +125,28 @@
 
 
     <!-- ====================================== -->
-    <!-- CONTENIDO -->
+    <!-- CORTES -->
     <!-- ====================================== -->
 
     <main class="seccion">
 
 
-        <!-- ====================================== -->
         <!-- CARNES ROJAS -->
-        <!-- ====================================== -->
 
-        <section id="carnes-rojas">
-
+        <section>
 
             <h2 class="titulo-categoria">
                 Carnes Rojas
             </h2>
 
-
             <p class="descripcion-categoria">
-
                 Cortes seleccionados de vacuno,
                 ideales para preparar a la parrilla.
-
             </p>
 
 
             <div class="productos mt-4">
 
-
-                <!-- ====================================== -->
-                <!-- COSTILLAS DE VACUNO -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -326,10 +160,8 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Costillas ideales para una cocción lenta.
                         Su carne queda tierna, jugosa y llena de sabor.
-
                     </p>
 
                     <p class="precio-producto">
@@ -338,10 +170,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Costillas de Vacuno',
-                            15000
-                        )"
+                        onclick="agregarAlPedido('Costillas de Vacuno', 15000)"
                     >
                         Agregar al pedido
                     </button>
@@ -349,10 +178,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- ENTRAÑA -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -366,11 +191,9 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Corte delgado de intenso sabor,
                         ideal para cocinar rápidamente
                         a fuego fuerte y servir jugoso.
-
                     </p>
 
                     <p class="precio-producto">
@@ -379,10 +202,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Entraña',
-                            16000
-                        )"
+                        onclick="agregarAlPedido('Entraña', 16000)"
                     >
                         Agregar al pedido
                     </button>
@@ -390,10 +210,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- ASADO DE TIRA -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -407,10 +223,8 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Corte tradicional de parrilla que combina
                         carne, grasa y hueso, entregando un sabor intenso.
-
                     </p>
 
                     <p class="precio-producto">
@@ -419,10 +233,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Asado de Tira',
-                            17000
-                        )"
+                        onclick="agregarAlPedido('Asado de Tira', 17000)"
                     >
                         Agregar al pedido
                     </button>
@@ -430,10 +241,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- LOMO VETADO -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -447,11 +254,9 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Corte jugoso y sabroso,
                         caracterizado por una excelente
                         infiltración de grasa.
-
                     </p>
 
                     <p class="precio-producto">
@@ -460,10 +265,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Lomo Vetado',
-                            18000
-                        )"
+                        onclick="agregarAlPedido('Lomo Vetado', 18000)"
                     >
                         Agregar al pedido
                     </button>
@@ -471,10 +273,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- FILETE -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -488,10 +286,8 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Uno de los cortes más tiernos del vacuno,
                         con poca grasa y una textura suave y delicada.
-
                     </p>
 
                     <p class="precio-producto">
@@ -500,10 +296,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Filete',
-                            20000
-                        )"
+                        onclick="agregarAlPedido('Filete', 20000)"
                     >
                         Agregar al pedido
                     </button>
@@ -511,10 +304,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- PARRILLADA -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -528,10 +317,8 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Selección de distintos cortes pensada
                         para compartir y preparar un asado completo.
-
                     </p>
 
                     <p class="precio-producto">
@@ -540,15 +327,13 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Parrillada',
-                            45000
-                        )"
+                        onclick="agregarAlPedido('Parrillada', 45000)"
                     >
                         Agregar al pedido
                     </button>
 
                 </div>
+
 
             </div>
 
@@ -556,41 +341,27 @@
 
 
 
-        <!-- ====================================== -->
-        <!-- LÍNEA ENTRE CARNES -->
-        <!-- ====================================== -->
-
         <hr class="separador-categorias">
 
 
 
-        <!-- ====================================== -->
         <!-- CARNES BLANCAS -->
-        <!-- ====================================== -->
 
-        <section id="carnes-blancas">
-
+        <section>
 
             <h2 class="titulo-categoria">
                 Carnes Blancas
             </h2>
 
-
             <p class="descripcion-categoria">
-
                 Alternativas de pollo y pavo,
                 ideales para preparaciones ligeras
                 y llenas de sabor.
-
             </p>
 
 
             <div class="productos mt-4">
 
-
-                <!-- ====================================== -->
-                <!-- ALITAS DE POLLO -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -604,11 +375,8 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
-                        Ideales para marinar y cocinar
-                        sobre la parrilla. Perfectas
-                        para compartir como aperitivo.
-
+                        Ideales para marinar y cocinar sobre la parrilla.
+                        Perfectas para compartir como aperitivo.
                     </p>
 
                     <p class="precio-producto">
@@ -617,10 +385,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Alitas de Pollo',
-                            6990
-                        )"
+                        onclick="agregarAlPedido('Alitas de Pollo', 6990)"
                     >
                         Agregar al pedido
                     </button>
@@ -628,10 +393,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- TRUTRO DE POLLO -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -645,11 +406,9 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Corte jugoso y de gran sabor,
-                        especialmente recomendado para
-                        cocinar lentamente sobre la parrilla.
-
+                        recomendado para cocinar lentamente
+                        sobre la parrilla.
                     </p>
 
                     <p class="precio-producto">
@@ -658,10 +417,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Trutro de Pollo',
-                            7990
-                        )"
+                        onclick="agregarAlPedido('Trutro de Pollo', 7990)"
                     >
                         Agregar al pedido
                     </button>
@@ -669,10 +425,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- PECHUGA DE POLLO -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -686,11 +438,9 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Pechuga fresca y magra,
                         ideal para cocinar a la parrilla,
                         al horno o a la plancha.
-
                     </p>
 
                     <p class="precio-producto">
@@ -699,10 +449,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Pechuga de Pollo',
-                            8990
-                        )"
+                        onclick="agregarAlPedido('Pechuga de Pollo', 8990)"
                     >
                         Agregar al pedido
                     </button>
@@ -710,10 +457,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- FILETE DE POLLO -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -727,10 +470,8 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Filetes tiernos y fáciles de preparar.
                         Ideales para una cocción rápida a la parrilla.
-
                     </p>
 
                     <p class="precio-producto">
@@ -739,10 +480,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Filete de Pollo',
-                            9990
-                        )"
+                        onclick="agregarAlPedido('Filete de Pollo', 9990)"
                     >
                         Agregar al pedido
                     </button>
@@ -750,10 +488,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- BROCHETAS DE POLLO -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -767,10 +501,8 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Trozos de pollo preparados en brochetas
                         y listos para cocinar directamente a la parrilla.
-
                     </p>
 
                     <p class="precio-producto">
@@ -779,10 +511,7 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Brochetas de Pollo',
-                            10990
-                        )"
+                        onclick="agregarAlPedido('Brochetas de Pollo', 10990)"
                     >
                         Agregar al pedido
                     </button>
@@ -790,10 +519,6 @@
                 </div>
 
 
-
-                <!-- ====================================== -->
-                <!-- PECHUGA DE PAVO -->
-                <!-- ====================================== -->
 
                 <div class="card-producto">
 
@@ -807,10 +532,8 @@
                     </h3>
 
                     <p class="descripcion-producto">
-
                         Carne baja en grasa y de sabor suave.
                         Excelente alternativa para preparaciones ligeras.
-
                     </p>
 
                     <p class="precio-producto">
@@ -819,15 +542,13 @@
 
                     <button
                         class="btn btn-danger"
-                        onclick="agregarAlPedido(
-                            'Pechuga de Pavo',
-                            11990
-                        )"
+                        onclick="agregarAlPedido('Pechuga de Pavo', 11990)"
                     >
                         Agregar al pedido
                     </button>
 
                 </div>
+
 
             </div>
 
@@ -837,7 +558,9 @@
 
 
 
+    <!-- ====================================== -->
     <!-- FOOTER -->
+    <!-- ====================================== -->
 
     <footer class="pie-pagina">
 
@@ -892,7 +615,7 @@
 
 
     <!-- ====================================== -->
-    <!-- MODAL ACCESO -->
+    <!-- MODAL -->
     <!-- ====================================== -->
 
     <div
@@ -924,54 +647,21 @@
 
                 <div class="modal-body">
 
-                    <form>
+                    <input
+                        type="email"
+                        class="form-control mb-3"
+                        placeholder="Correo electrónico"
+                    >
 
-                        <div class="mb-3">
+                    <input
+                        type="password"
+                        class="form-control mb-3"
+                        placeholder="Contraseña"
+                    >
 
-                            <label
-                                for="email"
-                                class="form-label"
-                            >
-                                Correo electrónico
-                            </label>
-
-                            <input
-                                type="email"
-                                class="form-control"
-                                id="email"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="mb-3">
-
-                            <label
-                                for="password"
-                                class="form-label"
-                            >
-                                Contraseña
-                            </label>
-
-                            <input
-                                type="password"
-                                class="form-control"
-                                id="password"
-                                required
-                            >
-
-                        </div>
-
-
-                        <button
-                            type="submit"
-                            class="btn btn-danger"
-                        >
-                            Iniciar sesión
-                        </button>
-
-                    </form>
+                    <button class="btn btn-danger">
+                        Iniciar sesión
+                    </button>
 
                 </div>
 
@@ -984,45 +674,44 @@
 
 
     <!-- ====================================== -->
+    <!-- BOOTSTRAP -->
+    <!-- ====================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+
+    <!-- ====================================== -->
     <!-- PEDIDO -->
     <!-- ====================================== -->
 
     <script src="./assets/js/pedido.js"></script>
 
 
-
     <!-- ====================================== -->
-    <!-- BOOTSTRAP -->
-    <!-- ====================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    >
-    </script>
-
-
-
-    <!-- ====================================== -->
-    <!-- ANIMACIÓN DE LÍNEA DEL HEADER -->
+    <!-- HEADER STICKY + LÍNEA AL HACER SCROLL -->
     <!-- ====================================== -->
 
     <script>
 
-        const headerCortes =
-            document.getElementById("headerCortes");
+        const header =
+            document.getElementById(
+                "headerPrincipal"
+            );
 
 
-        function actualizarHeaderCortes() {
+        function actualizarHeader() {
 
             if (window.scrollY > 40) {
 
-                headerCortes.classList.add(
+                header.classList.add(
                     "header-scroll"
                 );
 
             } else {
 
-                headerCortes.classList.remove(
+                header.classList.remove(
                     "header-scroll"
                 );
 
@@ -1033,11 +722,11 @@
 
         window.addEventListener(
             "scroll",
-            actualizarHeaderCortes
+            actualizarHeader
         );
 
 
-        actualizarHeaderCortes();
+        actualizarHeader();
 
     </script>
 

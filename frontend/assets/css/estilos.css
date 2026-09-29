@@ -16,9 +16,7 @@ html {
 
 body {
     font-family: "Inter", sans-serif;
-
-    background-color: #1C1C1C;
-
+    background-color: #0e0e0e;
     color: white;
 }
 
@@ -27,7 +25,6 @@ body {
 /* TIPOGRAFÍAS                           */
 /* ===================================== */
 
-.logo,
 .hero h1,
 .hero h2,
 .titulo-seccion,
@@ -55,12 +52,11 @@ strong {
 
 
 /* ===================================== */
-/* ENCABEZADO GENERAL                    */
+/* NAVBAR GENERAL                        */
 /* ===================================== */
 
 .encabezado {
-    background-color: #111111;
-
+    background-color: #0a0a0a;
     color: white;
 
     min-height: 85px;
@@ -73,14 +69,14 @@ strong {
 
     align-items: center;
 
-    gap: 35px;
+    position: relative;
 
     z-index: 1000;
 }
 
 
 /* ===================================== */
-/* HEADER ESPECIAL DEL INICIO            */
+/* HEADER DEL INDEX                      */
 /* ===================================== */
 
 .encabezado-home {
@@ -105,8 +101,7 @@ strong {
 
 
 /* ===================================== */
-/* LÍNEA DEL HEADER                      */
-/* OCULTA CUANDO ESTÁ ARRIBA             */
+/* LÍNEA HEADER INDEX                    */
 /* ===================================== */
 
 .encabezado-home::after {
@@ -117,38 +112,42 @@ strong {
     bottom: 0;
     left: 50%;
 
-    transform:
-        translateX(-50%)
-        scaleX(0.85);
-
     width: 90%;
     height: 1px;
 
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.55),
+        rgba(255, 255, 255, 0.60),
         transparent
     );
+
+    transform:
+        translateX(-50%)
+        scaleX(0);
+
+    transform-origin: center;
 
     opacity: 0;
 
     transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
+        transform 0.35s ease,
+        opacity 0.25s ease;
 
     pointer-events: none;
 }
 
 
 /* ===================================== */
-/* HEADER DESPUÉS DE HACER SCROLL        */
+/* HEADER INDEX DESPUÉS DEL SCROLL       */
 /* ===================================== */
 
 .encabezado-home.header-scroll {
     background-color: rgba(17, 17, 17, 0.96);
 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    box-shadow:
+        0 4px 20px
+        rgba(0, 0, 0, 0.45);
 
     backdrop-filter: blur(8px);
 
@@ -161,18 +160,133 @@ strong {
 }
 
 
-/* ===================================== */
-/* LÍNEA DESPUÉS DE LA ANIMACIÓN         */
-/* ===================================== */
-
 .encabezado-home.header-scroll::after {
-    opacity: 1;
-
     transform:
         translateX(-50%)
         scaleX(1);
 
-    transition-delay: 0.4s;
+    opacity: 1;
+
+    transition:
+        transform
+        0.65s
+        cubic-bezier(0.22, 1, 0.36, 1)
+        0.35s,
+
+        opacity
+        0.45s
+        ease
+        0.35s;
+}
+
+
+/* ===================================== */
+/* HEADER INTERNO                        */
+/* CORTES / PARRILLAS / PEDIDO           */
+/* ===================================== */
+
+.encabezado-interno {
+    position: sticky;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    background-color: #0a0a0a;
+
+    z-index: 1000;
+
+    box-shadow: none;
+
+    transition:
+        background-color 0.4s ease,
+        box-shadow 0.4s ease,
+        backdrop-filter 0.4s ease;
+}
+
+
+/* ===================================== */
+/* LÍNEA DEL HEADER INTERNO              */
+/* ===================================== */
+
+.encabezado-interno::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 0;
+    left: 50%;
+
+    width: 90%;
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.55),
+        transparent
+    );
+
+    transform:
+        translateX(-50%)
+        scaleX(0);
+
+    transform-origin: center;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        transform 0.35s ease,
+        opacity 0.25s ease;
+}
+
+
+/* ===================================== */
+/* HEADER INTERNO DESPUÉS DEL SCROLL     */
+/* ===================================== */
+
+.encabezado-interno.header-scroll {
+    background-color: rgba(
+        10,
+        10,
+        10,
+        0.98
+    );
+
+    box-shadow:
+        0 4px 20px
+        rgba(0, 0, 0, 0.40);
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+/* ===================================== */
+/* LÍNEA INTERNA AL HACER SCROLL         */
+/* ===================================== */
+
+.encabezado-interno.header-scroll::after {
+    transform:
+        translateX(-50%)
+        scaleX(1);
+
+    opacity: 1;
+
+    transition:
+        transform
+        0.65s
+        cubic-bezier(0.22, 1, 0.36, 1)
+        0.20s,
+
+        opacity
+        0.40s
+        ease
+        0.20s;
 }
 
 
@@ -181,26 +295,65 @@ strong {
 /* ===================================== */
 
 .logo {
-    color: #E00000;
+    display: flex;
 
-    font-size: 32px;
+    align-items: center;
 
-    font-weight: 800;
+    justify-content: flex-start;
 
-    letter-spacing: 0.5px;
+    justify-self: start;
 
-    white-space: nowrap;
+    height: 55px;
+
+    min-width: 100px;
+
+    z-index: 2;
+}
+
+
+.logo a {
+    display: flex;
+
+    align-items: center;
+
+    height: 100%;
+
+    text-decoration: none;
+
+    line-height: 0;
+}
+
+
+.logo-imagen {
+    display: block;
+
+    width: auto;
+
+    height: 55px;
+
+    max-width: 145px;
+
+    max-height: 55px;
+
+    object-fit: contain;
 }
 
 
 /* ===================================== */
-/* MENÚ                                  */
+/* MENÚ CENTRADO EN TODA LA PÁGINA       */
 /* ===================================== */
 
 .menu-navegacion {
+    position: absolute;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     gap: 14px;
@@ -212,6 +365,10 @@ strong {
     background-color: transparent;
 
     border: none;
+
+    white-space: nowrap;
+
+    z-index: 2;
 }
 
 
@@ -249,7 +406,7 @@ strong {
 
 
 /* ===================================== */
-/* CARRITO + ACCESO                      */
+/* PEDIDO + ACCESO                       */
 /* ===================================== */
 
 .acciones-header {
@@ -259,14 +416,18 @@ strong {
 
     justify-content: flex-end;
 
+    justify-self: end;
+
     gap: 15px;
 
     white-space: nowrap;
+
+    z-index: 2;
 }
 
 
 /* ===================================== */
-/* PORTADA / HERO                        */
+/* HERO                                  */
 /* ===================================== */
 
 .hero {
@@ -299,10 +460,6 @@ strong {
 }
 
 
-/* ===================================== */
-/* CONTENIDO HERO                        */
-/* ===================================== */
-
 .hero-contenido {
     width: 100%;
 
@@ -320,10 +477,6 @@ strong {
 }
 
 
-/* ===================================== */
-/* TÍTULO HERO                           */
-/* ===================================== */
-
 .hero h1 {
     font-family: "Playfair Display", serif;
 
@@ -336,14 +489,8 @@ strong {
     letter-spacing: 0.5px;
 
     margin-bottom: 20px;
-
-    text-align: center;
 }
 
-
-/* ===================================== */
-/* SUBTÍTULO HERO                        */
-/* ===================================== */
 
 .hero h2 {
     font-family: "Playfair Display", serif;
@@ -357,14 +504,8 @@ strong {
     line-height: 1.25;
 
     margin-bottom: 20px;
-
-    text-align: center;
 }
 
-
-/* ===================================== */
-/* TEXTO HERO                            */
-/* ===================================== */
 
 .hero p {
     font-size: 20px;
@@ -372,8 +513,6 @@ strong {
     color: white;
 
     margin-bottom: 30px;
-
-    text-align: center;
 }
 
 
@@ -381,11 +520,11 @@ strong {
 /* BOTONES HERO                          */
 /* ===================================== */
 
-
 .hero-botones {
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     gap: 14px;
@@ -409,8 +548,6 @@ strong {
 
     border-radius: 2px;
 
-    font-family: "Inter", sans-serif;
-
     font-size: 15px;
 
     font-weight: 700;
@@ -427,8 +564,6 @@ strong {
 }
 
 
-/* EFECTO AL PASAR EL MOUSE */
-
 .hero-botones .btn:hover {
     background-color: #E00000;
 
@@ -441,13 +576,13 @@ strong {
 
 
 /* ===================================== */
-/* SECCIONES GENERALES                   */
+/* SECCIONES                             */
 /* ===================================== */
 
 .seccion {
     padding: 70px 30px;
 
-    background-color: #1C1C1C;
+    background-color: #0e0e0e;
 }
 
 
@@ -467,7 +602,7 @@ strong {
 
 
 /* ===================================== */
-/* PRODUCTOS DESTACADOS                  */
+/* DESTACADOS                            */
 /* ===================================== */
 
 .destacados {
@@ -488,17 +623,12 @@ strong {
 }
 
 
-/* ===================================== */
-/* LÍNEA HERO → DESTACADOS               */
-/* ===================================== */
-
 .destacados::before {
     content: "";
 
     position: absolute;
 
     top: 0;
-
     left: 50%;
 
     transform: translateX(-50%);
@@ -513,11 +643,6 @@ strong {
         rgba(255, 255, 255, 0.55),
         transparent
     );
-}
-
-
-.destacados .titulo-seccion {
-    color: white;
 }
 
 
@@ -551,7 +676,9 @@ strong {
 
     border: 1px solid #383838;
 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.45);
+    box-shadow:
+        0 4px 15px
+        rgba(0, 0, 0, 0.45);
 
     display: flex;
 
@@ -566,7 +693,9 @@ strong {
 .card-producto:hover {
     transform: translateY(-4px);
 
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    box-shadow:
+        0 8px 22px
+        rgba(0, 0, 0, 0.55);
 }
 
 
@@ -596,13 +725,7 @@ strong {
 }
 
 
-/* ===================================== */
-/* DESCRIPCIÓN DE PRODUCTOS              */
-/* ===================================== */
-
 .descripcion-producto {
-    font-family: "Inter", sans-serif;
-
     font-size: 15px !important;
 
     line-height: 1.5;
@@ -617,24 +740,13 @@ strong {
 }
 
 
-/* ===================================== */
-/* PRECIO                                */
-/* ===================================== */
-
 .precio-producto {
-    font-family: "Inter", sans-serif;
-
     color: #FF3B3B !important;
 
     font-size: 25px !important;
 
     font-weight: 700 !important;
 
-    margin-bottom: 15px;
-}
-
-
-.card-producto p {
     margin-bottom: 15px;
 }
 
@@ -679,11 +791,20 @@ strong {
 .separador-categorias {
     margin: 80px auto;
 
-    width: 80%;
+    width: 90%;
+
+    height: 1px;
 
     border: 0;
 
-    border-top: 2px solid #444444;
+    opacity: 1;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.55),
+        transparent
+    );
 }
 
 
@@ -694,7 +815,7 @@ strong {
 .nosotros {
     position: relative;
 
-    background-color: #1C1C1C;
+    background-color: #0e0e0e;
 
     color: white;
 
@@ -702,17 +823,12 @@ strong {
 }
 
 
-/* ===================================== */
-/* LÍNEA DESTACADOS → LA CASA            */
-/* ===================================== */
-
 .nosotros::before {
     content: "";
 
     position: absolute;
 
     top: 0;
-
     left: 50%;
 
     transform: translateX(-50%);
@@ -732,7 +848,9 @@ strong {
 
 .nosotros-contenido {
     max-width: 850px;
+
     margin: auto;
+
     text-align: left;
 }
 
@@ -760,18 +878,56 @@ strong {
 
 
 /* ===================================== */
-/* BOTONES                               */
+/* PEDIDO                                */
 /* ===================================== */
 
-.btn {
-    font-family: "Inter", sans-serif;
+.pedido-contenedor {
+    max-width: 900px;
 
-    font-weight: 600;
+    margin: 0 auto;
+
+    min-height: 600px;
+}
+
+
+.resumen-pedido {
+    margin-top: 40px;
+
+    padding: 30px;
+
+    background-color: #2A2A2A;
+
+    border: 1px solid #0e0e0e;
+
+    border-radius: 8px;
+}
+
+
+.resumen-pedido p {
+    font-size: 20px;
+}
+
+
+.total-pedido {
+    font-size: 25px !important;
+}
+
+
+.botones-pedido {
+    margin-top: 25px;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
 }
 
 
 /* ===================================== */
-/* CARRITO                               */
+/* TARJETAS PEDIDO                       */
 /* ===================================== */
 
 .card {
@@ -785,7 +941,8 @@ strong {
 }
 
 
-.card h3 {
+.card h3,
+.card h4 {
     color: white;
 
     font-family: "Playfair Display", serif;
@@ -794,8 +951,14 @@ strong {
 }
 
 
-.card hr {
-    border-color: #666666;
+/* ===================================== */
+/* BOTONES                               */
+/* ===================================== */
+
+.btn {
+    font-family: "Inter", sans-serif;
+
+    font-weight: 600;
 }
 
 
@@ -843,7 +1006,7 @@ strong {
 /* ===================================== */
 
 .form-control {
-    background-color: #1C1C1C;
+    background-color: #0e0e0e;
 
     color: white;
 
@@ -852,7 +1015,7 @@ strong {
 
 
 .form-control:focus {
-    background-color: #1C1C1C;
+    background-color: #0e0e0e;
 
     color: white;
 
@@ -876,12 +1039,14 @@ strong {
 .pie-pagina {
     position: relative;
 
-    background-color: #111111;
+    background-color: #020202;
+
     color: white;
 
     padding: 45px;
 
     display: flex;
+
     justify-content: space-around;
 
     gap: 40px;
@@ -889,8 +1054,6 @@ strong {
     flex-wrap: wrap;
 }
 
-
-/* LÍNEA ENTRE "LA CASA" Y FOOTER */
 
 .pie-pagina::before {
     content: "";
@@ -903,6 +1066,7 @@ strong {
     transform: translateX(-50%);
 
     width: 90%;
+
     height: 1px;
 
     background: linear-gradient(
@@ -912,6 +1076,7 @@ strong {
         transparent
     );
 }
+
 
 .pie-pagina h2 {
     color: #E00000;
@@ -925,13 +1090,44 @@ strong {
     margin-bottom: 15px;
 }
 
+
 .pie-pagina p {
     color: #D8D8D8;
 }
 
 
 /* ===================================== */
-/* RESPONSIVE MÓVIL                      */
+/* TABLET                                */
+/* ===================================== */
+
+@media (max-width: 1050px) {
+
+    .menu-navegacion {
+        gap: 10px;
+    }
+
+
+    .menu-navegacion a {
+        font-size: 14px;
+    }
+
+
+    .logo-imagen {
+        height: 50px;
+
+        max-height: 50px;
+    }
+
+
+    .acciones-header {
+        gap: 8px;
+    }
+
+}
+
+
+/* ===================================== */
+/* MÓVIL                                 */
 /* ===================================== */
 
 @media (max-width: 700px) {
@@ -947,6 +1143,8 @@ strong {
     }
 
 
+    /* INDEX */
+
     .encabezado-home {
         position: absolute;
     }
@@ -959,13 +1157,53 @@ strong {
     }
 
 
-    .logo {
-        font-size: 30px;
+    /* PÁGINAS INTERNAS */
+
+    .encabezado-interno {
+        position: sticky;
+
+        top: 0;
+
+        width: 100%;
     }
 
 
+    /* LOGO */
+
+    .logo {
+        height: 48px;
+
+        min-width: auto;
+    }
+
+
+    .logo-imagen {
+        width: auto;
+
+        height: 48px;
+
+        max-width: 120px;
+
+        max-height: 48px;
+    }
+
+
+    /*
+        En móvil se elimina el centrado
+        absoluto porque el menú pasa
+        debajo del logo.
+    */
+
     .menu-navegacion {
+        position: static;
+
+        left: auto;
+
+        transform: none;
+
         width: 100%;
+
+        justify-content: center;
 
         flex-wrap: wrap;
 
@@ -1042,6 +1280,23 @@ strong {
 
     .productos {
         gap: 20px;
+    }
+
+
+    .card-producto {
+        width: 100%;
+
+        max-width: 320px;
+    }
+
+
+    .nosotros-contenido {
+        text-align: left;
+    }
+
+
+    .botones-pedido {
+        justify-content: center;
     }
 
 }

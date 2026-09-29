@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>PEDIDO - El Asador</title>
+    <title>Pedido - El Asador</title>
 
 
     <link
@@ -47,13 +47,27 @@
 <body>
 
 
+    <!-- ====================================== -->
     <!-- HEADER -->
+    <!-- ====================================== -->
 
-    <header class="encabezado">
-
+    <header
+        class="encabezado encabezado-interno"
+        id="headerPrincipal"
+    >
 
         <div class="logo">
-            EL ASADOR
+
+            <a href="index.html">
+
+                <img
+                    src="./assets/imagenes_productos/logo minimalista.png"
+                    alt="Logo El Asador"
+                    class="logo-imagen"
+                >
+
+            </a>
+
         </div>
 
 
@@ -90,7 +104,7 @@
                 href="pedido.html"
                 class="btn btn-outline-light"
             >
-                🛒 PEDIDO
+                🛒 Pedido
                 (<span id="contador-pedido">0</span>)
             </a>
 
@@ -110,95 +124,60 @@
 
 
 
-    <!-- CONTENIDO -->
+    <!-- ====================================== -->
+    <!-- PEDIDO -->
+    <!-- ====================================== -->
 
-    <main class="container py-5">
+    <main class="seccion pedido-contenedor">
 
-        <h1 class="text-center mb-5">
-            Mi Pedido
+        <h1 class="titulo-seccion">
+            Tu Pedido
         </h1>
 
 
-        <div class="row">
+        <div id="lista-pedido">
+        </div>
 
 
-            <!-- PRODUCTOS -->
+        <div class="resumen-pedido">
 
-            <div class="col-lg-8">
+            <p>
+                Subtotal:
 
-                <div id="lista-pedido">
-                </div>
+                <strong id="subtotal-pedido">
+                    $0
+                </strong>
+            </p>
 
+
+            <hr>
+
+
+            <p class="total-pedido">
+                Total:
+
+                <strong id="total-pedido">
+                    $0
+                </strong>
+            </p>
+
+
+            <div class="botones-pedido">
 
                 <button
-                    class="btn btn-outline-danger mt-3"
+                    class="btn btn-outline-danger"
                     onclick="vaciarPedido()"
                 >
-                    Vaciar Pedido
+                    Vaciar pedido
                 </button>
 
-            </div>
 
-
-
-            <!-- RESUMEN -->
-
-            <div class="col-lg-4">
-
-                <div class="card p-4">
-
-                    <h3 class="mb-4">
-                        Resumen
-                    </h3>
-
-
-                    <div class="d-flex justify-content-between">
-
-                        <span>
-                            Subtotal:
-                        </span>
-
-                        <strong id="subtotal-Pedido">
-                            $0
-                        </strong>
-
-                    </div>
-
-
-                    <hr>
-
-
-                    <div class="d-flex justify-content-between fs-4">
-
-                        <span>
-                            Total:
-                        </span>
-
-                        <strong
-                            class="text-danger"
-                            id="total-pedido"
-                        >
-                            $0
-                        </strong>
-
-                    </div>
-
-
-                    <button
-                        class="btn btn-danger mt-4 w-100"
-                    >
-                        Finalizar compra
-                    </button>
-
-
-                    <a
-                        href="cortes.html"
-                        class="btn btn-outline-light mt-3 w-100"
-                    >
-                        Seguir comprando
-                    </a>
-
-                </div>
+                <a
+                    href="cortes.html"
+                    class="btn btn-danger"
+                >
+                    Seguir comprando
+                </a>
 
             </div>
 
@@ -208,7 +187,9 @@
 
 
 
+    <!-- ====================================== -->
     <!-- FOOTER -->
+    <!-- ====================================== -->
 
     <footer class="pie-pagina">
 
@@ -262,7 +243,9 @@
 
 
 
+    <!-- ====================================== -->
     <!-- MODAL -->
+    <!-- ====================================== -->
 
     <div
         class="modal fade"
@@ -280,10 +263,12 @@
                         Acceder
                     </h5>
 
+
                     <button
                         type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
+                        aria-label="Cerrar"
                     >
                     </button>
 
@@ -292,54 +277,23 @@
 
                 <div class="modal-body">
 
-                    <form>
-
-                        <div class="mb-3">
-
-                            <label
-                                for="email"
-                                class="form-label"
-                            >
-                                Correo electrónico
-                            </label>
-
-                            <input
-                                type="email"
-                                class="form-control"
-                                id="email"
-                                required
-                            >
-
-                        </div>
+                    <input
+                        type="email"
+                        class="form-control mb-3"
+                        placeholder="Correo electrónico"
+                    >
 
 
-                        <div class="mb-3">
-
-                            <label
-                                for="password"
-                                class="form-label"
-                            >
-                                Contraseña
-                            </label>
-
-                            <input
-                                type="password"
-                                class="form-control"
-                                id="password"
-                                required
-                            >
-
-                        </div>
+                    <input
+                        type="password"
+                        class="form-control mb-3"
+                        placeholder="Contraseña"
+                    >
 
 
-                        <button
-                            type="submit"
-                            class="btn btn-danger"
-                        >
-                            Iniciar sesión
-                        </button>
-
-                    </form>
+                    <button class="btn btn-danger">
+                        Iniciar sesión
+                    </button>
 
                 </div>
 
@@ -351,11 +305,61 @@
 
 
 
-    <script src="./assets/js/pedido.js"></script>
+    <!-- ====================================== -->
+    <!-- BOOTSTRAP -->
+    <!-- ====================================== -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    >
+    ></script>
+
+
+    <!-- ====================================== -->
+    <!-- PEDIDO -->
+    <!-- ====================================== -->
+
+    <script src="./assets/js/pedido.js"></script>
+
+
+    <!-- ====================================== -->
+    <!-- HEADER STICKY + LÍNEA AL HACER SCROLL -->
+    <!-- ====================================== -->
+
+    <script>
+
+        const header =
+            document.getElementById(
+                "headerPrincipal"
+            );
+
+
+        function actualizarHeader() {
+
+            if (window.scrollY > 40) {
+
+                header.classList.add(
+                    "header-scroll"
+                );
+
+            } else {
+
+                header.classList.remove(
+                    "header-scroll"
+                );
+
+            }
+
+        }
+
+
+        window.addEventListener(
+            "scroll",
+            actualizarHeader
+        );
+
+
+        actualizarHeader();
+
     </script>
 
 
