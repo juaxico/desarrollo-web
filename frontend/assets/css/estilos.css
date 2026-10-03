@@ -1300,3 +1300,39 @@ strong {
     }
 
 }
+
+/* ==========================================
+   DATOS DE DESPACHO / PEDIDO CONFIRMADO
+   ========================================== */
+
+.form-despacho {
+    margin-top: 30px;
+
+    padding: 30px;
+
+    background-color: #2A2A2A;
+
+    border: 1px solid #0e0e0e;
+
+    border-radius: 8px;
+}
+
+.form-despacho h2 {
+    font-size: 26px;
+
+    margin-bottom: 20px;
+}
+
+.pedido-confirmado {
+    padding: 60px 20px;
+}
+
+.pedido-confirmado .numero-pedido {
+    font-size: 28px;
+
+    font-weight: 700;
+}
+
+.pedido-confirmado .total-confirmado {
+    font-size: 22px;
+}

@@ -162,6 +162,57 @@
             </p>
 
 
+            <!-- DATOS DE DESPACHO -->
+
+            <form
+                id="form-despacho"
+                class="form-despacho"
+                novalidate
+            >
+
+                <h2>Datos de despacho</h2>
+
+                <div class="row g-3">
+
+                    <div class="col-12">
+                        <label for="desp-nombre" class="form-label">Nombre completo</label>
+                        <input type="text" class="form-control" id="desp-nombre"
+                               autocomplete="name" required>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label for="desp-direccion" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="desp-direccion"
+                               autocomplete="street-address" placeholder="Calle, número, depto." required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="desp-comuna" class="form-label">Comuna</label>
+                        <input type="text" class="form-control" id="desp-comuna">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="desp-telefono" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="desp-telefono"
+                               autocomplete="tel" placeholder="+56 9 1234 5678" required>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="desp-notas" class="form-label">Notas (opcional)</label>
+                        <textarea class="form-control" id="desp-notas" rows="2" maxlength="300"
+                                  placeholder="Ej: tocar el timbre 2 veces"></textarea>
+                    </div>
+
+                </div>
+
+                <div id="mensaje-despacho" class="mt-3" role="alert"></div>
+
+                <button type="submit" class="btn btn-danger btn-lg w-100 mt-3" id="btn-confirmar">
+                    Confirmar pedido
+                </button>
+
+            </form>
+
             <div class="botones-pedido">
 
                 <button
@@ -244,68 +295,6 @@
 
 
     <!-- ====================================== -->
-    <!-- MODAL -->
-    <!-- ====================================== -->
-
-    <div
-        class="modal fade"
-        id="myModal"
-        tabindex="-1"
-    >
-
-        <div class="modal-dialog">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-
-                    <h5 class="modal-title">
-                        Acceder
-                    </h5>
-
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Cerrar"
-                    >
-                    </button>
-
-                </div>
-
-
-                <div class="modal-body">
-
-                    <input
-                        type="email"
-                        class="form-control mb-3"
-                        placeholder="Correo electrónico"
-                    >
-
-
-                    <input
-                        type="password"
-                        class="form-control mb-3"
-                        placeholder="Contraseña"
-                    >
-
-
-                    <button class="btn btn-danger">
-                        Iniciar sesión
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ====================================== -->
     <!-- BOOTSTRAP -->
     <!-- ====================================== -->
 
@@ -319,6 +308,9 @@
     <!-- ====================================== -->
 
     <script src="./assets/js/pedido.js"></script>
+
+    <!-- ACCESO (registro / login) -->
+    <script src="./assets/js/auth.js"></script>
 
 
     <!-- ====================================== -->

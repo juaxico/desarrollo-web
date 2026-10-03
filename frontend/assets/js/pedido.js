@@ -626,20 +626,118 @@ window.vaciarPedido =
 
 
 // ==========================================
+// DATOS DE DESPACHO + CONFIRMAR PEDIDO
+// (solo existe en pedido.html)
+// ==========================================
+function mostrarMensajeDespacho(texto, tipo) {
+    const caja = document.getElementById("mensaje-despacho");
+    if (!caja) return;
+    caja.innerHTML = texto
+        ? `<div class="alert alert-${tipo} mb-0"></div>`
+        : "";
+    if (texto) caja.firstChild.textContent = texto;
+}
+
+function precargarDatosUsuario() {
+    const campo = document.getElementById("desp-nombre");
+    const usuario = window.Auth && window.Auth.usuario();
+    if (campo && usuario && !campo.value) {
+        campo.value = usuario.nombre;
+    }
+}
+
+async function confirmarPedido(evento) {
+    evento.preventDefault();
+
+    const form = evento.target;
+    mostrarMensajeDespacho("");
+
+    const pedido = obtenerPedido();
+    if (pedido.length === 0) {
+        mostrarMensajeDespacho("Tu pedido está vacío. Agrega productos antes de confirmar.", "warning");
+        return;
+    }
+
+    if (!form.checkValidity()) {
+        form.classList.add("was-validated");
+        mostrarMensajeDespacho("Completa los datos de despacho.", "warning");
+        return;
+    }
+
+    // Para confirmar hay que tener sesión iniciada
+    if (!window.Auth.token()) {
+        window.Auth.abrirLogin(
+            "Inicia sesión o crea una cuenta para confirmar tu pedido.",
+            () => {
+                precargarDatosUsuario();
+                form.requestSubmit();
+            }
+        );
+        return;
+    }
+
+    const boton = document.getElementById("btn-confirmar");
+    boton.disabled = true;
+    boton.textContent = "Enviando...";
+
+    try {
+        const respuesta = await window.Auth.api("/pedidos", {
+            method: "POST",
+            body: JSON.stringify({
+                despacho: {
+                    nombre: document.getElementById("desp-nombre").value,
+                    direccion: document.getElementById("desp-direccion").value,
+                    comuna: document.getElementById("desp-comuna").value,
+                    telefono: document.getElementById("desp-telefono").value,
+                    notas: document.getElementById("desp-notas").value
+                },
+                // solo mandamos nombre y cantidad: el precio lo calcula el servidor
+                items: pedido.map(p => ({ nombre: p.nombre, cantidad: p.cantidad }))
+            })
+        });
+
+        localStorage.removeItem("pedido");
+        actualizarContadorPedido();
+        mostrarPedidoConfirmado(respuesta);
+    } catch (error) {
+        mostrarMensajeDespacho(error.message, "danger");
+        boton.disabled = false;
+        boton.textContent = "Confirmar pedido";
+    }
+}
+
+function mostrarPedidoConfirmado(respuesta) {
+    const contenedor = document.querySelector(".pedido-contenedor");
+    contenedor.innerHTML = `
+        <div class="pedido-confirmado text-center">
+            <h1 class="titulo-seccion">¡Pedido recibido!</h1>
+            <p class="numero-pedido"></p>
+            <p class="total-confirmado"></p>
+            <p>Te contactaremos al teléfono que indicaste para coordinar el despacho.</p>
+            <a href="cortes.html" class="btn btn-danger">Seguir comprando</a>
+        </div>
+    `;
+    contenedor.querySelector(".numero-pedido").textContent = "Pedido N° " + respuesta.id;
+    contenedor.querySelector(".total-confirmado").textContent =
+        "Total: $" + respuesta.total.toLocaleString("es-CL");
+}
+
+// ==========================================
 // CUANDO TERMINA DE CARGAR LA PÁGINA
 // ==========================================
 
-document.addEventListener(
+document.addEventListener("DOMContentLoaded", function () {
 
-    "DOMContentLoaded",
+    mostrarPedido();
 
-    function () {
+    actualizarContadorPedido();
 
-        mostrarPedido();
+    const formDespacho = document.getElementById("form-despacho");
 
-
-        actualizarContadorPedido();
-
+    if (formDespacho) {
+        formDespacho.addEventListener("submit", confirmarPedido);
+        precargarDatosUsuario();
+        document.addEventListener("auth:cambio", precargarDatosUsuario);
     }
 
-);
+});
