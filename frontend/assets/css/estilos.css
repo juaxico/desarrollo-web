@@ -1336,3 +1336,30 @@ strong {
 .pedido-confirmado .total-confirmado {
     font-size: 22px;
 }
+
+
+/* ==========================================
+   IMAGEN DEL PRODUCTO EN EL PEDIDO
+   ========================================== */
+
+.pedido-img {
+    width: 90px;
+
+    height: 90px;
+
+    object-fit: cover;
+
+    border-radius: 8px;
+
+    flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+
+    .pedido-img {
+        width: 64px;
+
+        height: 64px;
+    }
+
+}

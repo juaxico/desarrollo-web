@@ -267,6 +267,26 @@ function cambiarCantidad(
 
 }
 
+ // ==========================================
+// IMÁGENES DE LOS PRODUCTOS
+// (se piden al backend: nombre -> archivo de imagen)
+// ==========================================
+let imagenesProductos = {};
+
+async function cargarImagenesProductos() {
+    try {
+        const respuesta = await fetch("/api/productos");
+        const lista = await respuesta.json();
+
+        lista.forEach(function (p) {
+            imagenesProductos[p.nombre] = p.imagen;
+        });
+
+        mostrarPedido(); // vuelve a dibujar, ahora con imágenes
+    } catch (error) {
+        // si el backend no responde, el pedido se ve igual, solo sin fotos
+    }
+}
 
 // ==========================================
 // MOSTRAR PRODUCTOS EN pedido.html
@@ -386,6 +406,15 @@ function mostrarPedido() {
 
 
             total += subtotal;
+            const archivoImagen = imagenesProductos[producto.nombre];
+
+const imagenHtml = archivoImagen
+    ? `<img
+            class="pedido-img"
+            src="./assets/imagenes_productos/${encodeURIComponent(archivoImagen)}"
+            alt="${producto.nombre}"
+       >`
+    : "";
 
 
             contenedor.innerHTML += `
