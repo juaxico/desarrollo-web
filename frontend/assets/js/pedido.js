@@ -131,7 +131,8 @@ function mostrarAlertaPedido(nombre) {
 
 function agregarAlPedido(
     nombre,
-    precio
+    precio,
+    imagen
 ) {
 
     const pedido =
@@ -153,6 +154,11 @@ function agregarAlPedido(
 
         productoExistente.cantidad++;
 
+        // Si venía de antes sin foto, se la agregamos
+        if (!productoExistente.imagen && imagen) {
+            productoExistente.imagen = imagen;
+        }
+
     }
 
     // Si no existe lo agrega
@@ -163,6 +169,8 @@ function agregarAlPedido(
             nombre: nombre,
 
             precio: precio,
+
+            imagen: imagen || "",
 
             cantidad: 1
 
@@ -406,7 +414,7 @@ function mostrarPedido() {
 
 
             total += subtotal;
-            const archivoImagen = imagenesProductos[producto.nombre];
+            const archivoImagen = producto.imagen || imagenesProductos[producto.nombre];
 
 const imagenHtml = archivoImagen
     ? `<img
@@ -434,7 +442,11 @@ const imagenHtml = archivoImagen
                         >
 
 
-                            <div>
+                            <div class="d-flex align-items-start gap-3">
+
+                                ${imagenHtml}
+
+                                <div>
 
                                 <h4>
                                     ${producto.nombre}
@@ -454,6 +466,8 @@ const imagenHtml = archivoImagen
                                     </strong>
 
                                 </p>
+
+                            </div>
 
                             </div>
 
@@ -758,6 +772,8 @@ function mostrarPedidoConfirmado(respuesta) {
 document.addEventListener("DOMContentLoaded", function () {
 
     mostrarPedido();
+
+    cargarImagenesProductos();
 
     actualizarContadorPedido();
 

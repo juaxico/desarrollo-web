@@ -1,0 +1,109 @@
+/* ==========================================
+   CATÁLOGO DINÁMICO (se arma con catalogo.js)
+   Grid de Bootstrap para la estructura,
+   Box Model y Flexbox para cada componente.
+   ========================================== */
+
+.catalogo {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 0 16px;
+}
+
+
+/* ---------- Filtros ---------- */
+
+.catalogo-filtros {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.catalogo-filtros .btn {
+    min-width: 110px;
+}
+
+.catalogo-contador {
+    text-align: center;
+
+    color: #D8D8D8;
+
+    margin-bottom: 25px;
+}
+
+
+/* ---------- Tarjeta dentro del grid ---------- */
+
+.card-producto--grid {
+    width: 100%;
+
+    max-width: 340px;
+
+    margin-inline: auto;
+}
+
+.card-producto--grid .descripcion-producto {
+    min-height: 0;
+
+    flex-grow: 1;
+}
+
+.card-producto--grid img.sin-imagen {
+    visibility: hidden;
+}
+
+
+/* ---------- Estados: cargando / error / vacío ---------- */
+
+.catalogo-estado {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 14px;
+
+    max-width: 520px;
+
+    margin: 30px auto;
+
+    padding: 40px 20px;
+
+    text-align: center;
+
+    color: #D8D8D8;
+}
+
+.catalogo-estado p {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.catalogo-estado--error {
+    background-color: #2A2A2A;
+
+    border: 1px solid #E00000;
+
+    border-radius: 8px;
+}
+
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 576px) {
+
+    .catalogo-filtros .btn {
+        flex: 1 1 40%;
+    }
+
+}

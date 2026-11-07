@@ -47,6 +47,9 @@
         href="./assets/css/estilos.css"
     >
 
+    <!-- CATÁLOGO DINÁMICO -->
+    <link rel="stylesheet" href="./assets/css/catalogo.css">
+
 </head>
 
 
@@ -197,90 +200,14 @@
         </h2>
 
 
-        <div class="productos">
-
-
-            <!-- PARRILLADA -->
-
-            <div class="card-producto">
-
-                <img
-                    src="./assets/imagenes_productos/parrillada.jpg"
-                    alt="Parrillada"
-                >
-
-                <h3>
-                    Parrillada
-                </h3>
-
-                <p class="precio-producto">
-                    $45.000
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlPedido('Parrillada', 45000)"
-                >
-                    Agregar al pedido
-                </button>
-
-            </div>
-
-
-            <!-- LOMO VETADO -->
-
-            <div class="card-producto">
-
-                <img
-                    src="./assets/imagenes_productos/lomo vetado.png"
-                    alt="Lomo Vetado"
-                >
-
-                <h3>
-                    Lomo Vetado
-                </h3>
-
-                <p class="precio-producto">
-                    $18.000
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlPedido('Lomo Vetado', 18000)"
-                >
-                    Agregar al pedido
-                </button>
-
-            </div>
-
-
-            <!-- COSTILLAS -->
-
-            <div class="card-producto">
-
-                <img
-                    src="./assets/imagenes_productos/costillas de vacuno.png"
-                    alt="Costillas de Vacuno"
-                >
-
-                <h3>
-                    Costillas de Vacuno
-                </h3>
-
-                <p class="precio-producto">
-                    $15.000
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlPedido('Costillas de Vacuno', 15000)"
-                >
-                    Agregar al pedido
-                </button>
-
-            </div>
-
-
+        <!-- Destacados: catalogo.js los arma a partir de /api/productos -->
+        <div
+            id="catalogo"
+            class="catalogo"
+            data-nombres="Parrillada,Lomo Vetado,Costillas de Vacuno"
+            data-descripcion="false"
+        >
+            <noscript><p class="descripcion-categoria">Activa JavaScript para ver el catálogo.</p></noscript>
         </div>
 
     </section>
@@ -401,6 +328,9 @@
 
     <!-- ACCESO (registro / login) -->
     <script src="./assets/js/auth.js"></script>
+
+    <!-- CATÁLOGO DINÁMICO (productos desde la API) -->
+    <script src="./assets/js/catalogo.js"></script>
 
 
     <!-- HEADER AL HACER SCROLL -->

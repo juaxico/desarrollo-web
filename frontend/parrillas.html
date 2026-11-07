@@ -41,6 +41,9 @@
         href="./assets/css/estilos.css"
     >
 
+    <!-- CATÁLOGO DINÁMICO -->
+    <link rel="stylesheet" href="./assets/css/catalogo.css">
+
 </head>
 
 
@@ -141,113 +144,13 @@
         </p>
 
 
-        <div class="productos mt-5">
-
-
-            <!-- ====================================== -->
-            <!-- PARRILLA CLÁSICA -->
-            <!-- ====================================== -->
-
-            <div class="card-producto">
-
-                <img
-                    src="./assets/imagenes_productos/parrilla clasica.jfif"
-                    alt="Parrilla Clásica"
-                >
-
-                <h3>
-                    Parrilla Clásica
-                </h3>
-
-                <p class="descripcion-producto">
-                    Parrilla tradicional ideal para reuniones
-                    familiares y asados de fin de semana.
-                </p>
-
-                <p class="precio-producto">
-                    $79.990
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlPedido('Parrilla Clásica', 79990)"
-                >
-                    Agregar al pedido
-                </button>
-
-            </div>
-
-
-
-            <!-- ====================================== -->
-            <!-- PARRILLA TAMBOR -->
-            <!-- ====================================== -->
-
-            <div class="card-producto">
-
-                <img
-                    src="./assets/imagenes_productos/parrilla tambor.jfif"
-                    alt="Parrilla Tambor"
-                >
-
-                <h3>
-                    Parrilla Tambor
-                </h3>
-
-                <p class="descripcion-producto">
-                    Parrilla de gran capacidad, diseñada
-                    para preparar distintos cortes al mismo tiempo.
-                </p>
-
-                <p class="precio-producto">
-                    $99.990
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlPedido('Parrilla Tambor', 99990)"
-                >
-                    Agregar al pedido
-                </button>
-
-            </div>
-
-
-
-            <!-- ====================================== -->
-            <!-- PARRILLA PREMIUM -->
-            <!-- ====================================== -->
-
-            <div class="card-producto">
-
-                <img
-                    src="./assets/imagenes_productos/parrilla premium.jfif"
-                    alt="Parrilla Premium"
-                >
-
-                <h3>
-                    Parrilla Premium
-                </h3>
-
-                <p class="descripcion-producto">
-                    Parrilla robusta y de excelente terminación
-                    para quienes buscan una experiencia superior.
-                </p>
-
-                <p class="precio-producto">
-                    $129.990
-                </p>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="agregarAlPedido('Parrilla Premium', 129990)"
-                >
-                    Agregar al pedido
-                </button>
-
-            </div>
-
-
+        <!-- El catálogo se arma con catalogo.js a partir de /api/productos -->
+        <div
+            id="catalogo"
+            class="catalogo mt-5"
+            data-categorias="parrilla"
+        >
+            <noscript><p class="descripcion-categoria">Activa JavaScript para ver el catálogo.</p></noscript>
         </div>
 
     </main>
@@ -327,6 +230,9 @@
 
     <!-- ACCESO (registro / login) -->
     <script src="./assets/js/auth.js"></script>
+
+    <!-- CATÁLOGO DINÁMICO (productos desde la API) -->
+    <script src="./assets/js/catalogo.js"></script>
 
 
     <!-- ====================================== -->
