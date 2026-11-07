@@ -38,4 +38,5 @@ Abrir `http://localhost:3000` en el navegador.
 - **POST /api/pedidos:** Registra un pedido.
 - **Estados simulados:** `?simular=lento`, `?simular=error` y `?simular=vacio`.
 
-El proyecto utiliza una API local con Express y SQLite. Los servicios dummy independientes aún no están implementados.
+El proyecto utiliza una API local con Express y SQLite.
+
