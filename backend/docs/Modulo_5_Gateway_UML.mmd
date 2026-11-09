@@ -1,0 +1,45 @@
+classDiagram
+  class ApiGateway {
+    +int port
+    +route(method,path)
+    +checkJwt()
+    +rateLimit()
+  }
+  class RouteDefinition {
+    +string method
+    +string externalPath
+    +string internalPath
+    +string policy
+  }
+  class AuthenticationPolicy {
+    +verifyBearer()
+  }
+  class AuthorizationPolicy {
+    +allowed(role,resource)
+  }
+  class SecretProvider {
+    +getFromEnvironment(reference)
+  }
+  class ServiceTarget {
+    +string loopbackAddress
+    +int port
+    +string serviceKeyReference
+  }
+  class GraphQLGateway {
+    +queryResumenPedido(id)
+    +queryMisPedidos()
+    +maxDepth
+    +maxCost
+  }
+  class Resolver {
+    +ordersAdapter()
+    +inventoryAdapter()
+  }
+  ApiGateway "1" *-- "1..*" RouteDefinition
+  RouteDefinition "1" --> "1" ServiceTarget
+  RouteDefinition "1" --> "1" AuthenticationPolicy
+  RouteDefinition "1" --> "1" AuthorizationPolicy
+  ApiGateway ..> SecretProvider
+  ApiGateway ..> GraphQLGateway
+  GraphQLGateway "1" *-- "1..*" Resolver
+  GraphQLGateway ..> ServiceTarget

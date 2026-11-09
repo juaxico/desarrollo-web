@@ -1,0 +1,78 @@
+{
+  "fecha": "2026-11-09T00:20:38.543Z",
+  "ambiente": "Node v22.16.0",
+  "pruebas": [
+    {
+      "prueba": "Catálogo público y datos iniciales",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Servicio privado no accesible directamente",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Pedido requiere autenticación",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Registro, login, consulta del propio perfil",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Prevención de precio manipulado y reserva de stock",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Propiedad: no permite consultar pedido ajeno",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "GraphQL combina orders e inventory y protege los campos",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Permisos de administración denegados al cliente",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Crear usuario administrador y administrar stock",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Administración: crear, editar y desactivar producto",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "GraphQL lista únicamente los pedidos del cliente",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Actualización de perfil protegida",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Iniciar pago de prueba sin confirmación por cliente",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Webhook firmado y eventos duplicados idempotentes",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Pedido pagado no anulable, transiciones administrativas",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Anulación sin pago restaura existencias",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Pago simulado autorizado, rechazo de intrusos y estado persistido",
+      "resultado": "APROBADA"
+    },
+    {
+      "prueba": "Cierre de sesión revoca token",
+      "resultado": "APROBADA"
+    }
+  ]
+}

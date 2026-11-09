@@ -1,0 +1,16 @@
+{
+  "fecha": "2026-11-09T00:08:53.130Z",
+  "objetivo": "consulta catálogo",
+  "ambiente": "v24.21.0",
+  "endpoint": "http://127.0.0.1:3000/api/productos",
+  "solicitudes": 240,
+  "concurrencia": 12,
+  "duracionSegundos": 0.169,
+  "p95Ms": 11.2,
+  "throughputRps": 1421,
+  "errores": 0,
+  "cpuClienteMs": 187,
+  "rssClienteInicioMB": 44.8,
+  "rssClienteFinMB": 62.7,
+  "advertencia": "CPU y memoria corresponden al generador de carga, NO al proceso servidor."
+}

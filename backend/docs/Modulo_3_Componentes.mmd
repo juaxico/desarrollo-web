@@ -1,0 +1,16 @@
+flowchart TD
+ Browser[Frontend HTML / JS] --> G[API Gateway :3000]
+ G --> C[Auth / Clients :3003]
+ G --> I[Inventory :3001]
+ G --> O[Orders :3002]
+ G --> Q[GraphQL :3005]
+ G --> P[Payments :3004 / webhook firmado]
+ O -->|reserva / repone stock| I
+ O -->|solicita pago sandbox| P
+ P -->|evento validado| O
+ Q -->|pedido propio| O
+ Q -->|batch productos públicos| I
+ I --> DBI[(inventory.sqlite)]
+ O --> DBO[(orders.sqlite)]
+ C --> DBC[(clients.sqlite)]
+ P --> DBP[(payments.sqlite)]

@@ -689,42 +689,206 @@ function precargarDatosUsuario() {
     }
 }
 
-async function confirmarPedido(evento) {
-    evento.preventDefault();
+// Flujo integrado: crear el pedido, procesar el pago y recién entonces confirmar.
+// La aprobación se realiza mediante el servicio local configurado para esta versión.
+const PAGO_PENDIENTE_KEY = "asador_pago_pendiente";
+let pedidoPorPagar = null;
+let operacionEnCurso = false;
 
-    const form = evento.target;
-    mostrarMensajeDespacho("");
+function monedaPedido(monto) {
+    return "$" + Number(monto).toLocaleString("es-CL");
+}
 
-    const pedido = obtenerPedido();
-    if (pedido.length === 0) {
-        mostrarMensajeDespacho("Tu pedido está vacío. Agrega productos antes de confirmar.", "warning");
+function guardarPagoPendiente(pedido) {
+    pedidoPorPagar = { id: Number(pedido.id), total: Number(pedido.total) };
+    sessionStorage.setItem(PAGO_PENDIENTE_KEY, JSON.stringify({
+        ...pedidoPorPagar,
+        usuarioId: window.Auth.usuario()?.id ?? null
+    }));
+}
+
+function limpiarPagoPendiente() {
+    pedidoPorPagar = null;
+    sessionStorage.removeItem(PAGO_PENDIENTE_KEY);
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("pendiente")) {
+        url.searchParams.delete("pendiente");
+        window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    }
+}
+
+function crearEstadoDeCompra(titulo, descripcion) {
+    const contenedor = document.querySelector(".pedido-contenedor");
+    if (!contenedor) return null;
+    contenedor.replaceChildren();
+
+    const card = document.createElement("section");
+    card.className = "checkout-estado text-center";
+    card.setAttribute("aria-live", "polite");
+    const insignia = document.createElement("div");
+    insignia.className = "checkout-insignia";
+    insignia.setAttribute("aria-hidden", "true");
+    insignia.textContent = "✓";
+    const h = document.createElement("h1");
+    h.className = "titulo-seccion mb-3";
+    h.textContent = titulo;
+    const p = document.createElement("p");
+    p.className = "checkout-subtitulo";
+    p.textContent = descripcion;
+    const acciones = document.createElement("div");
+    acciones.className = "checkout-acciones";
+    card.append(insignia, h, p, acciones);
+    contenedor.append(card);
+    return {card, insignia, acciones};
+}
+
+function enlaceCheckout(texto, destino, clase) {
+    const a = document.createElement("a");
+    a.textContent = texto;
+    a.href = destino;
+    a.className = clase;
+    return a;
+}
+
+function mostrarProcesandoPago() {
+    const ui = crearEstadoDeCompra("Procesando tu pedido", "Estamos verificando el pago. No cierres esta página.");
+    if (!ui) return;
+    ui.insignia.textContent = "…";
+    ui.insignia.classList.add("checkout-cargando");
+}
+
+function mostrarPagoPendiente(pedido, error = "") {
+    guardarPagoPendiente(pedido);
+    const ui = crearEstadoDeCompra("Finalizar pago", `Pedido N° ${pedido.id} · Total: ${monedaPedido(pedido.total)}`);
+    if (!ui) return;
+    ui.insignia.textContent = "$";
+    if (error) {
+        const alerta = document.createElement("div");
+        alerta.className = "alert alert-warning text-start mt-3";
+        alerta.setAttribute("role", "alert");
+        alerta.textContent = error;
+        ui.card.insertBefore(alerta, ui.acciones);
+    }
+    const pagar = document.createElement("button");
+    pagar.type = "button";
+    pagar.className = "btn btn-danger btn-lg";
+    pagar.textContent = "Pagar";
+    pagar.addEventListener("click", () => procesarPagoPendiente());
+    ui.acciones.append(
+        pagar,
+        enlaceCheckout("Consultar mis pedidos", "mis-pedidos.html", "btn btn-outline-danger"),
+        enlaceCheckout("Seguir comprando", "cortes.html", "btn btn-outline-light")
+    );
+}
+
+function mostrarPedidoConfirmado(pedido) {
+    const ui = crearEstadoDeCompra("¡Pedido recibido!", "Tu pedido se registró correctamente.");
+    if (!ui) return;
+    const numero = document.createElement("p");
+    numero.className = "numero-pedido";
+    numero.textContent = `Pedido N° ${pedido.id}`;
+    const total = document.createElement("p");
+    total.className = "total-confirmado";
+    total.textContent = `Total: ${monedaPedido(pedido.total)}`;
+    const estado = document.createElement("p");
+    estado.className = "checkout-exito";
+    estado.textContent = "Pago aprobado";
+    const despacho = document.createElement("p");
+    despacho.textContent = "Te contactaremos al teléfono que indicaste para coordinar el despacho.";
+    ui.card.insertBefore(numero, ui.acciones);
+    ui.card.insertBefore(total, ui.acciones);
+    ui.card.insertBefore(estado, ui.acciones);
+    ui.card.insertBefore(despacho, ui.acciones);
+    ui.acciones.append(
+        enlaceCheckout("Seguir comprando", "cortes.html", "btn btn-danger"),
+        enlaceCheckout("Consultar mis pedidos", "mis-pedidos.html", "btn btn-outline-danger")
+    );
+}
+
+async function procesarPagoPendiente() {
+    if (operacionEnCurso || !pedidoPorPagar) return;
+    if (!window.Auth.token()) {
+        window.Auth.abrirLogin("Inicia sesión para continuar con el pago.", () => procesarPagoPendiente());
         return;
     }
+    operacionEnCurso = true;
+    const pendiente = { ...pedidoPorPagar };
+    // Registramos la operación en la que ocurrió el error. Un 404 del sistema de
+    // pagos NO equivale a que el pedido no exista: antes se mezclaban ambos casos.
+    let etapa = "consultarPedido";
+    mostrarProcesandoPago();
+    try {
+        // La consulta protege contra una repetición tras un timeout o recarga.
+        const actual = await window.Auth.api("/pedidos/" + pendiente.id);
+        if (actual.pagoEstado !== "aprobado") {
+            etapa = "iniciarPago";
+            await window.Auth.api("/pagos/iniciar/" + pendiente.id, {
+                method: "POST", body: "{}"
+            });
+            etapa = "confirmarPago";
+            const resultado = await window.Auth.api("/pagos/demo/" + pendiente.id + "/confirmar", {
+                method: "POST", body: JSON.stringify({ estado: "aprobado" })
+            });
+            if (resultado.pagoEstado !== "aprobado") throw new Error("No se pudo aprobar el pago.");
+        }
+        etapa = "verificarPago";
+        const verificado = await window.Auth.api("/pedidos/" + pendiente.id);
+        if (verificado.pagoEstado !== "aprobado") {
+            throw new Error("Aún no se confirmó el pago. Intenta nuevamente.");
+        }
+        limpiarPagoPendiente();
+        mostrarPedidoConfirmado(verificado);
+    } catch (error) {
+        // Nunca borra el pedido: permite reintentar sin crear otro ni reservar más stock.
+        console.warn("El Asador: no se pudo procesar el pago", {
+            etapa, codigo: error.status || null, mensaje: error.message
+        });
+        let texto;
+        if (error.status === 404 && etapa === "consultarPedido") {
+            texto = "No encontramos este pedido con tu sesión actual. Consulta Mis pedidos o vuelve a iniciar sesión con la cuenta usada para comprar.";
+        } else if (error.status === 404 && (etapa === "iniciarPago" || etapa === "confirmarPago")) {
+            texto = "El servicio de pagos no está disponible en este momento. Revisa la configuración del servidor y vuelve a intentarlo.";
+        } else if (error.status === 404 && etapa === "verificarPago") {
+            texto = "No se pudo consultar el estado final del pago. Consulta Mis pedidos antes de volver a intentarlo.";
+        } else {
+            texto = "No pudimos completar el pago: " + error.message + ". Puedes reintentarlo sin crear otro pedido.";
+        }
+        mostrarPagoPendiente(pendiente, texto);
+    } finally {
+        operacionEnCurso = false;
+    }
+}
 
+async function confirmarPedido(evento) {
+    evento.preventDefault();
+    if (operacionEnCurso) return;
+    const form = evento.currentTarget;
+    mostrarMensajeDespacho("");
+
+    const carrito = obtenerPedido();
+    if (!carrito.length) {
+        mostrarMensajeDespacho("Tu pedido está vacío. Agrega productos para continuar.", "warning");
+        return;
+    }
     if (!form.checkValidity()) {
         form.classList.add("was-validated");
         mostrarMensajeDespacho("Completa los datos de despacho.", "warning");
         return;
     }
-
-    // Para confirmar hay que tener sesión iniciada
     if (!window.Auth.token()) {
-        window.Auth.abrirLogin(
-            "Inicia sesión o crea una cuenta para confirmar tu pedido.",
-            () => {
-                precargarDatosUsuario();
-                form.requestSubmit();
-            }
-        );
+        window.Auth.abrirLogin("Inicia sesión o crea una cuenta para continuar.", () => {
+            precargarDatosUsuario();
+            form.requestSubmit();
+        });
         return;
     }
 
+    operacionEnCurso = true;
     const boton = document.getElementById("btn-confirmar");
     boton.disabled = true;
-    boton.textContent = "Enviando...";
-
+    boton.textContent = "Procesando...";
     try {
-        const respuesta = await window.Auth.api("/pedidos", {
+        const nuevo = await window.Auth.api("/pedidos", {
             method: "POST",
             body: JSON.stringify({
                 despacho: {
@@ -734,35 +898,104 @@ async function confirmarPedido(evento) {
                     telefono: document.getElementById("desp-telefono").value,
                     notas: document.getElementById("desp-notas").value
                 },
-                // solo mandamos nombre y cantidad: el precio lo calcula el servidor
-                items: pedido.map(p => ({ nombre: p.nombre, cantidad: p.cantidad }))
+                // El servidor calcula el precio oficial de cada artículo.
+                items: carrito.map(p => ({ nombre: p.nombre, cantidad: p.cantidad }))
             })
         });
-
+        // El pedido ya existe en el backend: no enviarlo por segunda vez.
+        guardarPagoPendiente(nuevo);
         localStorage.removeItem("pedido");
         actualizarContadorPedido();
-        mostrarPedidoConfirmado(respuesta);
+        operacionEnCurso = false;
+        await procesarPagoPendiente();
     } catch (error) {
-        mostrarMensajeDespacho(error.message, "danger");
-        boton.disabled = false;
-        boton.textContent = "Confirmar pedido";
+        if (pedidoPorPagar) {
+            mostrarPagoPendiente(pedidoPorPagar, "No pudimos completar el pago. Vuelve a pulsar Pagar.");
+        } else {
+            mostrarMensajeDespacho(
+                error.status && error.status < 500
+                    ? error.message
+                    : "No se pudo comprobar el resultado de la operación. Revisa Mis pedidos antes de volver a enviarla.",
+                "danger"
+            );
+            // Evita crear involuntariamente otro pedido si hubo una respuesta incierta.
+            if (error.status && error.status < 500) {
+                boton.disabled = false;
+                boton.textContent = "Pagar";
+            }
+        }
+    } finally {
+        operacionEnCurso = false;
     }
 }
 
-function mostrarPedidoConfirmado(respuesta) {
+// El carrito y un pedido ya creado son procesos independientes.
+// No debemos reemplazar una compra nueva con un pago pendiente guardado.
+function mostrarAvisoDePagoAnterior() {
     const contenedor = document.querySelector(".pedido-contenedor");
-    contenedor.innerHTML = `
-        <div class="pedido-confirmado text-center">
-            <h1 class="titulo-seccion">¡Pedido recibido!</h1>
-            <p class="numero-pedido"></p>
-            <p class="total-confirmado"></p>
-            <p>Te contactaremos al teléfono que indicaste para coordinar el despacho.</p>
-            <a href="cortes.html" class="btn btn-danger">Seguir comprando</a>
-        </div>
-    `;
-    contenedor.querySelector(".numero-pedido").textContent = "Pedido N° " + respuesta.id;
-    contenedor.querySelector(".total-confirmado").textContent =
-        "Total: $" + respuesta.total.toLocaleString("es-CL");
+    if (!contenedor || !window.Auth?.token()) return;
+    let pendiente;
+    try {
+        pendiente = JSON.parse(sessionStorage.getItem(PAGO_PENDIENTE_KEY) || "null");
+    } catch {
+        return;
+    }
+    const usuarioId = window.Auth.usuario()?.id ?? null;
+    if (!pendiente || pendiente.usuarioId !== usuarioId ||
+        !Number.isSafeInteger(Number(pendiente.id)) || Number(pendiente.id) <= 0) return;
+    if (document.getElementById("aviso-pago-anterior")) return;
+
+    const aviso = document.createElement("div");
+    aviso.id = "aviso-pago-anterior";
+    aviso.className = "alert alert-secondary d-flex align-items-center justify-content-between gap-3 flex-wrap";
+    const mensaje = document.createElement("span");
+    mensaje.textContent = `También tienes un pedido anterior N° ${pendiente.id} por completar.`;
+    const enlace = enlaceCheckout(
+        "Retomar pedido anterior",
+        `pedido.html?pendiente=${encodeURIComponent(pendiente.id)}`,
+        "btn btn-outline-danger"
+    );
+    aviso.append(mensaje, enlace);
+    const titulo = contenedor.querySelector("h1");
+    if (titulo) titulo.insertAdjacentElement("afterend", aviso);
+    else contenedor.prepend(aviso);
+}
+
+async function restaurarPagoPendiente() {
+    const params = new URLSearchParams(window.location.search);
+    const idSolicitado = params.get("pendiente");
+    // Solo se reabre un pago al hacer clic explícitamente en "Pagar pedido"
+    // desde el historial o en "Retomar pedido anterior". El enlace de la
+    // cabecera siempre abre el carrito, aunque existan pedidos sin pagar.
+    if (!idSolicitado) {
+        mostrarAvisoDePagoAnterior();
+        return;
+    }
+    const id = Number(idSolicitado);
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        mostrarMensajeDespacho("Número de pedido inválido.", "warning");
+        return;
+    }
+    if (!window.Auth.token()) {
+        mostrarMensajeDespacho("Inicia sesión para continuar con el pago.", "warning");
+        window.Auth.abrirLogin("Inicia sesión para continuar con el pago.", restaurarPagoPendiente);
+        return;
+    }
+    try {
+        const pedido = await window.Auth.api("/pedidos/" + id);
+        if (pedido.pagoEstado === "aprobado") {
+            limpiarPagoPendiente();
+            mostrarPedidoConfirmado(pedido);
+        } else if (pedido.estado !== "cancelado") {
+            mostrarPagoPendiente(pedido);
+        } else {
+            limpiarPagoPendiente();
+            mostrarMensajeDespacho("Este pedido fue cancelado.", "warning");
+        }
+    } catch (error) {
+        // Conservamos la compra nueva y no descartamos una sesión ajena.
+        mostrarMensajeDespacho(error.message, "danger");
+    }
 }
 
 // ==========================================
@@ -783,6 +1016,7 @@ document.addEventListener("DOMContentLoaded", function () {
         formDespacho.addEventListener("submit", confirmarPedido);
         precargarDatosUsuario();
         document.addEventListener("auth:cambio", precargarDatosUsuario);
+        restaurarPagoPendiente();
     }
 
 });

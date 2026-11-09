@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pedido - El Asador</title>
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="./assets/css/estilos.css"
+    >
+
+</head>
+
+
+<body><header class="encabezado encabezado-interno" id="headerPrincipal">
+    <div class="logo">
+        <a href="index.html" aria-label="El Asador - Inicio">
+            <img src="./assets/imagenes_productos/logo minimalista.png"
+                 alt="Logo El Asador" class="logo-imagen">
+        </a>
+    </div>
+
+    <!-- En tablet y móvil se despliega la navegación con este botón. -->
+    <button class="menu-toggle" type="button"
+            aria-label="Abrir menú de navegación"
+            aria-controls="panel-navegacion"
+            aria-expanded="false">
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+    </button>
+
+    <div class="panel-navegacion" id="panel-navegacion">
+        <nav class="menu-navegacion" aria-label="Navegación principal">
+            <a href="index.html">INICIO</a>
+            <span aria-hidden="true">|</span>
+            <a href="cortes.html">CORTES</a>
+            <span aria-hidden="true">|</span>
+            <a href="parrillas.html">PARRILLAS</a>
+            <span aria-hidden="true">|</span>
+            <a href="index.html#nosotros">LA CASA</a>
+        </nav>
+
+        <!-- Mantener esta clase: auth.js añade aquí el acceso o el usuario. -->
+        <div class="acciones-header">
+            <a href="pedido.html" class="btn btn-outline-light">
+                🛒 Pedido (<span id="contador-pedido">0</span>)
+            </a>
+            <button type="button" class="btn btn-outline-danger"
+                    data-bs-toggle="modal" data-bs-target="#myModal">
+                Acceder
+            </button>
+        </div>
+    </div>
+</header>
+<main class="seccion pedido-contenedor" style="min-height:60vh;padding-top:130px;">
+ <h1 class="titulo-seccion">Mis pedidos</h1>
+ <p>Revisa tus compras, los productos y el estado de cada pedido.</p>
+ <button type="button" id="btn-actualizar-historial" class="btn btn-danger mb-3">Actualizar historial</button>
+ <a href="pedido.html" class="btn btn-outline-danger mb-3">Volver al carrito</a>
+ <div id="estado-historial" class="alert alert-info" role="status"></div>
+ <div id="lista-historial"></div>
+ <section id="detalle-historial" aria-live="polite"></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./assets/js/pedido.js"></script>
+<script src="./assets/js/auth.js"></script>
+<script src="./assets/js/menu-responsive.js"></script>
+<script src="./assets/js/historial.js"></script>
+</body></html>

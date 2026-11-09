@@ -1363,3 +1363,147 @@ strong {
     }
 
 }
+
+
+/* ============================================================
+   MENÚ RESPONSIVO - EVALUACIÓN 1
+   Escritorio: menú horizontal original, tablet/móvil: desplegable
+   ============================================================ */
+.menu-toggle { display: none; }
+/* display:contents conserva los elementos en las columnas del grid
+   original del encabezado, sin alterar el diseño de escritorio. */
+.panel-navegacion { display: contents; }
+
+@media (max-width: 991.98px) {
+    .encabezado,
+    .encabezado.encabezado-home,
+    .encabezado.encabezado-interno {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0;
+        min-height: 72px;
+        padding: 10px 20px;
+    }
+    .encabezado.encabezado-home {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 10, 10, 0.96);
+    }
+    .encabezado.encabezado-home.header-scroll {
+        position: fixed;
+        padding: 10px 20px;
+    }
+    .encabezado .logo { height: 52px; min-width: 0; }
+    .encabezado .logo-imagen { height: 52px; max-height: 52px; max-width: 125px; }
+
+    .menu-toggle {
+        display: flex;
+        width: 45px;
+        height: 42px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border: 1px solid rgba(255,255,255,.65);
+        border-radius: 6px;
+        background: transparent;
+        color: white;
+        cursor: pointer;
+        justify-self: end;
+        z-index: 3;
+    }
+    .menu-toggle-line {
+        display: block;
+        width: 23px;
+        height: 2px;
+        background: currentColor;
+        border-radius: 2px;
+    }
+    .menu-toggle:focus-visible { outline: 2px solid #e00000; outline-offset: 3px; }
+
+    .encabezado .panel-navegacion {
+        display: none;
+        grid-column: 1 / -1;
+        width: 100%;
+        padding: 14px 0 6px;
+        border-top: 1px solid rgba(255,255,255,.18);
+        margin-top: 10px;
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    .encabezado .panel-navegacion.is-open { display: flex; }
+    .encabezado .menu-navegacion {
+        position: static;
+        left: auto;
+        transform: none;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        gap: 0;
+        white-space: normal;
+    }
+    .encabezado .menu-navegacion a {
+        display: block;
+        padding: 12px 8px;
+        font-size: 15px;
+        text-align: left;
+    }
+    .encabezado .menu-navegacion span { display: none; }
+    .encabezado .acciones-header {
+        display: flex;
+        width: 100%;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .encabezado .acciones-header .btn { white-space: normal; }
+}
+
+
+/* Pago integrado y confirmación de pedido, sin redirecciones. */
+.checkout-estado {
+    max-width: 720px;
+    margin: 24px auto 70px;
+    padding: clamp(30px, 6vw, 64px) clamp(18px, 5vw, 44px);
+    color: #f5f5f5;
+    background: linear-gradient(145deg, #171717, #0d0d0d);
+    border: 1px solid rgba(255,255,255,.13);
+    border-radius: 16px;
+    box-shadow: 0 20px 45px rgba(0,0,0,.28);
+}
+.checkout-estado .titulo-seccion { margin-bottom: 15px; }
+.checkout-estado .numero-pedido { font-size: 1.6rem; font-weight: 700; margin: 20px 0 8px; }
+.checkout-estado .total-confirmado { font-size: 1.2rem; margin: 0 0 15px; }
+.checkout-estado .checkout-subtitulo { color: #ddd; font-size: 1.05rem; }
+.checkout-estado .checkout-exito { color: #90e1ad; font-weight: 700; margin-bottom: 18px; }
+.checkout-insignia {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 18px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #e63045;
+    border-radius: 50%;
+    color: #fff;
+    background: #be2238;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+.checkout-cargando { animation: checkout-pulso 1s ease-in-out infinite alternate; }
+@keyframes checkout-pulso { from {opacity:.4;} to {opacity:1;} }
+.checkout-acciones { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.checkout-acciones .btn { padding: .75rem 1.1rem; }
+@media (max-width: 576px) {
+    .checkout-estado { margin: 0 auto 32px; }
+    .checkout-acciones { flex-direction: column; }
+    .checkout-acciones .btn { width: 100%; }
+}

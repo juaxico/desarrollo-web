@@ -60,83 +60,47 @@
     <!-- HEADER -->
     <!-- ====================================== -->
 
-    <header
-        class="encabezado encabezado-home"
-        id="headerPrincipal"
-    >
+    <header class="encabezado encabezado-home" id="headerPrincipal">
+    <div class="logo">
+        <a href="index.html" aria-label="El Asador - Inicio">
+            <img src="./assets/imagenes_productos/logo minimalista.png"
+                 alt="Logo El Asador" class="logo-imagen">
+        </a>
+    </div>
 
+    <!-- En tablet y móvil se despliega la navegación con este botón. -->
+    <button class="menu-toggle" type="button"
+            aria-label="Abrir menú de navegación"
+            aria-controls="panel-navegacion"
+            aria-expanded="false">
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+        <span class="menu-toggle-line"></span>
+    </button>
 
-        <!-- LOGO -->
-
-        <div class="logo">
-
-            <a href="index.html">
-
-                <img
-                    src="./assets/imagenes_productos/logo minimalista.png"
-                    alt="Logo El Asador"
-                    class="logo-imagen"
-                >
-
-            </a>
-
-        </div>
-
-
-        <!-- MENÚ -->
-
-        <nav class="menu-navegacion">
-
-            <a href="index.html">
-                INICIO
-            </a>
-
-            <span>|</span>
-
-            <a href="cortes.html">
-                CORTES
-            </a>
-
-            <span>|</span>
-
-            <a href="parrillas.html">
-                PARRILLAS
-            </a>
-
-            <span>|</span>
-
-            <a href="#nosotros">
-                LA CASA
-            </a>
-
+    <div class="panel-navegacion" id="panel-navegacion">
+        <nav class="menu-navegacion" aria-label="Navegación principal">
+            <a href="index.html">INICIO</a>
+            <span aria-hidden="true">|</span>
+            <a href="cortes.html">CORTES</a>
+            <span aria-hidden="true">|</span>
+            <a href="parrillas.html">PARRILLAS</a>
+            <span aria-hidden="true">|</span>
+            <a href="#nosotros">LA CASA</a>
         </nav>
 
-
-        <!-- PEDIDO + ACCESO -->
-
+        <!-- Mantener esta clase: auth.js añade aquí el acceso o el usuario. -->
         <div class="acciones-header">
-
-            <a
-                href="pedido.html"
-                class="btn btn-outline-light"
-            >
-                🛒 Pedido
-                (<span id="contador-pedido">0</span>)
+            <a href="pedido.html" class="btn btn-outline-light">
+                🛒 Pedido (<span id="contador-pedido">0</span>)
             </a>
-
-
-            <button
-                type="button"
-                class="btn btn-outline-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#myModal"
-            >
+            <button type="button" class="btn btn-outline-danger"
+                    data-bs-toggle="modal" data-bs-target="#myModal">
                 Acceder
             </button>
-
         </div>
-
-    </header>
+    </div>
+</header>
 
 
 
@@ -367,6 +331,7 @@
     </script>
 
 
+    <script src="./assets/js/menu-responsive.js"></script>
 </body>
 
 </html>

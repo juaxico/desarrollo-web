@@ -1,0 +1,10 @@
+'use strict';
+const {openDB,str,hashPassword}=require('../src/common');
+const email=process.env.ADMIN_EMAIL?.trim().toLowerCase(),password=process.env.ADMIN_PASSWORD;
+const name=process.env.ADMIN_NAME||'Administrador',role=process.env.ADMIN_ROLE||'admin';
+if(!email||!password||password.length<12||!['admin','admin_inventario','operador_pedidos'].includes(role))throw Error('Define ADMIN_EMAIL, ADMIN_PASSWORD (12+), ADMIN_ROLE válido en entorno');
+const db=openDB('clients');
+if(!db.prepare('SELECT name FROM sqlite_master WHERE type=? AND name=?').get('table','users'))throw Error('Inicia backend al menos una vez para crear tablas');
+if(db.prepare('SELECT id FROM users WHERE email=?').get(email))throw Error('Cuenta ya existente');
+db.prepare('INSERT INTO users(nombre,email,password_hash,role) VALUES(?,?,?,?)').run(str(name,'Nombre',2,120),email,hashPassword(password),role);
+console.log('Cuenta administrativa creada (sin mostrar credenciales).');

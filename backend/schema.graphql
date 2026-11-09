@@ -1,0 +1,24 @@
+# Schema público permitido por GraphQL Gateway privado.
+type Query {
+  resumenPedido(id: ID!): ResumenPedido
+  misPedidos: [PedidoBasico!]!
+}
+type ResumenPedido {
+  id: ID!
+  total: Int!
+  estado: String!
+  pagoEstado: String!
+  items: [ItemResumen!]!
+}
+type PedidoBasico {
+  id: ID!
+  total: Int!
+  estado: String!
+  pagoEstado: String!
+}
+type ItemResumen {
+  nombre: String!
+  cantidad: Int!
+  precioUnitario: Int!
+  descripcion: String
+}

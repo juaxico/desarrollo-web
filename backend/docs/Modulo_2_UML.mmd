@@ -1,0 +1,85 @@
+classDiagram
+    class Cliente {
+      +int id
+      +string nombre
+      +string email
+      -string password_hash
+      +string role
+      +int token_version
+    }
+    class Producto {
+      +int id
+      +string nombre
+      +string categoria
+      +int precio
+      +int stock
+      +bool activo
+    }
+    class Pedido {
+      +int id
+      +int user_id
+      +int total
+      +string estado
+      +string pago_estado
+      +string direccion
+    }
+    class DetallePedido {
+      +int order_id
+      +int product_id
+      +int cantidad
+      +int precio_unitario
+    }
+    class Pago {
+      +int id
+      +int order_id
+      +int amount
+      +string provider_ref
+      +string state
+    }
+    class CatalogService {
+      <<service>>
+      +GET productos() S01
+      +GET adminProductos() S12
+      +POST crearProducto() S13
+      +PATCH editarProducto() S14
+      +DELETE desactivarProducto() S15
+      +PATCH ajustarStock() S16
+    }
+    class OrdersService {
+      <<service>>
+      +POST crearPedido() S07
+      +GET misPedidos() S08
+      +GET detallePedido() S09
+      +POST anular() S10
+      +GET adminPedidos() S17
+      +PATCH avanzarEstado() S18
+    }
+    class ClientsService {
+      <<service>>
+      +POST registrar() S02
+      +POST login() S03
+      +GET perfil() S04
+      +PATCH editarPerfil() S05
+      +POST logout() S06
+    }
+    class PaymentsService {
+      <<service>>
+      +POST iniciarPago() S11
+      +POST procesarWebhook() S20
+      +POST demoConfirmar() S21
+    }
+    class GraphQLService {
+      <<service>>
+      +POST resumenPedido() S19
+      +POST misPedidos() S19
+    }
+    Cliente "1" --> "0..*" Pedido : realiza
+    Pedido "1" *-- "1..*" DetallePedido : contiene
+    Producto "1" --> "0..*" DetallePedido : referencia
+    Pedido "1" --> "0..1" Pago : tiene
+    CatalogService ..> Producto : usa DTO
+    OrdersService ..> Pedido : administra
+    ClientsService ..> Cliente : administra
+    PaymentsService ..> Pago : administra
+    GraphQLService ..> Pedido : consultaDTO
+    GraphQLService ..> Producto : agregaDTO

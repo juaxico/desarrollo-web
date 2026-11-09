@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant C as Cliente frontend
+    participant G as API Gateway
+    participant A as Clients/Auth
+    participant O as Orders
+    participant I as Inventory
+    C->>G: POST /api/pedidos + Bearer
+    G->>A: GET internal/validate
+    A-->>G: userId y rol verificados
+    G->>O: POST /orders + identidad verificada
+    O->>I: POST /internal/reserve
+    I-->>O: ítems, precios oficiales, stock reservado
+    O->>O: Guardar pedido y sus ítems
+    O-->>G: 201 id,total,pago pendiente
+    G-->>C: Pedido creado
+    C->>G: POST /api/graphql resumenPedido
+    G->>A: Validar JWT
+    G->>Q: Consulta autorizada
+    participant Q as GraphQL
+    Q->>O: Leer pedido propio
+    Q->>I: Batch descripciones públicas
+    Q-->>G: DTO agregado
+    G-->>C: data.resumenPedido
