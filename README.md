@@ -2,7 +2,6 @@
 
 **Caso 20:** Parrilladas «El Asador» — carnes y parrillas familiares.  
 **Integrantes:** Vadin Fuentes y Joaquín Latham · **NRC:** 8479.  
-**Frontend:** versión responsiva desarrollada en Evaluación 1, con carrito, despacho, pago integrado e historial.
 
 ## Arquitectura y flujo
 
