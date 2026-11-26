@@ -157,6 +157,10 @@
 
         const boton = crear("button", "btn btn-danger", "Agregar al pedido");
         boton.type = "button";
+        if (producto.stock === 0) {
+            boton.disabled = true;
+            boton.textContent = "Sin stock";
+        }
         boton.addEventListener("click", function () {
             agregarAlPedido(producto.nombre, producto.precio, producto.imagen);
         });

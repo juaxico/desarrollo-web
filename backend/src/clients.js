@@ -1,6 +1,6 @@
 'use strict';
 const crypto = require('node:crypto');
-const {openDB, router,r,secret,sign,hashPassword,checkPassword, HttpError,integer,str,mustUser} = require('./common');
+const {openDB, router,r,secret,sign,hashPassword,checkPassword, HttpError,integer,str,mustUser,auditLog} = require('./common');
 const db=openDB('clients');
 db.exec(`CREATE TABLE IF NOT EXISTS users (
  id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,23 +19,27 @@ function token(user) {
  const input=`${header}.${payload}`;const sig=crypto.createHmac('sha256',secret('JWT_SECRET')).update(input).digest('base64url');
  return `${input}.${sig}`;
 }
-function verify(tokenValue){
+function verify(tokenValue,checked=()=>{}){
  if(typeof tokenValue!=='string'||tokenValue.length>3000) throw new HttpError(401,'Sesión inválida.');
  const parts=tokenValue.split('.');if(parts.length!==3)throw new HttpError(401,'Sesión inválida.');
  const raw=`${parts[0]}.${parts[1]}`;
  const expected=crypto.createHmac('sha256',secret('JWT_SECRET')).update(raw).digest('base64url');
- if(parts[2].length!==expected.length||!crypto.timingSafeEqual(Buffer.from(parts[2]),Buffer.from(expected)))throw new HttpError(401,'Sesión inválida.');
+ if(!/^[A-Za-z0-9_-]+$/.test(parts[2])||Buffer.byteLength(parts[2])!==Buffer.byteLength(expected)||!crypto.timingSafeEqual(Buffer.from(parts[2]),Buffer.from(expected)))throw new HttpError(401,'Sesión inválida.');
+ checked('firma_verificada');
  let payload,header;
  try{header=JSON.parse(Buffer.from(parts[0],'base64url'));payload=JSON.parse(Buffer.from(parts[1],'base64url'));}catch{throw new HttpError(401,'Sesión inválida.');}
- if(header.alg!=='HS256'||header.typ!=='JWT'||!Number.isInteger(payload.exp)||payload.exp<=Math.floor(Date.now()/1000))throw new HttpError(401,'Sesión expirada.');
+ if(!header||typeof header!=='object'||!payload||typeof payload!=='object'||header.alg!=='HS256'||header.typ!=='JWT'||!Number.isInteger(payload.exp)||payload.exp<=Math.floor(Date.now()/1000))throw new HttpError(401,'Sesión expirada.');
+ checked('vigencia_verificada');
  const user=db.prepare('SELECT * FROM users WHERE id=?').get(Number(payload.sub));
  if(!user||payload.v!==user.token_version)throw new HttpError(401,'Sesión revocada.');
+ checked('sesion_verificada');
  return SAFE(user);
 }
 const routes=[
  r('POST',/^\/register$/,({body})=>{
   const nombre=str(body.nombre,'Nombre',2,120);const email=normalizeEmail(body.email);
-  const password=str(body.password,'Contraseña',8,128);
+  if(typeof body.password!=='string'||body.password.length<8||body.password.length>128)throw new HttpError(400,'Contraseña fuera de rango.');
+  const password=body.password;
   if(db.prepare('SELECT id FROM users WHERE email=?').get(email))throw new HttpError(409,'Ese correo ya está registrado.');
   const ret=db.prepare('INSERT INTO users(nombre,email,password_hash,role) VALUES(?,?,?,?)').run(nombre,email,hashPassword(password),'cliente');
   const user=db.prepare('SELECT * FROM users WHERE id=?').get(Number(ret.lastInsertRowid));
@@ -50,9 +54,17 @@ const routes=[
   return {token:token(u),usuario:SAFE(u)};
  }),
  r('GET',/^\/internal\/validate$/,({req})=>{
-  const auth=req.headers.authorization||'';
-  if(!auth.startsWith('Bearer '))throw new HttpError(401,'Debes iniciar sesión.');
-  return {usuario:verify(auth.slice(7))};
+  auditLog('AUTH','validacion_recibida',{ruta:'/internal/validate'});
+  try {
+   const auth=req.headers.authorization||'';
+   if(!auth.startsWith('Bearer '))throw new HttpError(401,'Debes iniciar sesión.');
+   const usuario=verify(auth.slice(7),evento=>auditLog('AUTH',evento));
+   auditLog('AUTH','autenticacion_aprobada',{estado:200});
+   return {usuario};
+  } catch(error) {
+   auditLog('AUTH','autenticacion_rechazada',{estado:error instanceof HttpError?error.status:500,motivo:error instanceof HttpError?'sesion_no_valida':'fallo_interno'});
+   throw error;
+  }
  }),
  r('GET',/^\/me$/,ctx=>{
   mustUser(ctx);const u=db.prepare('SELECT * FROM users WHERE id=?').get(ctx.userId);

@@ -28,32 +28,61 @@
         document.dispatchEvent(new CustomEvent("auth:cambio"));
     }
 
-    function cerrarSesion() {
+    function limpiarSesionLocal() {
         localStorage.removeItem(KEY_TOKEN);
         localStorage.removeItem(KEY_USUARIO);
         document.dispatchEvent(new CustomEvent("auth:cambio"));
     }
 
+    let cerrandoSesion = false;
+    async function cerrarSesion() {
+        if (cerrandoSesion) return;
+        if (!token()) { limpiarSesionLocal(); return; }
+
+        cerrandoSesion = true;
+        const boton = document.getElementById("btn-logout");
+        document.getElementById("error-cerrar-sesion")?.remove();
+        if (boton) boton.disabled = true;
+        try {
+            await api("/auth/logout", { method: "POST", body: "{}" });
+            limpiarSesionLocal();
+        } catch (error) {
+            // Un 401 ya invalida la sesión local; otros fallos permiten reintentar.
+            if (error.status !== 401) {
+                const aviso = document.createElement("p");
+                aviso.id = "error-cerrar-sesion";
+                aviso.className = "alert alert-warning small mt-2";
+                aviso.setAttribute("role", "alert");
+                aviso.textContent = "No se pudo cerrar la sesión en el servidor. Inténtalo nuevamente. " + error.message;
+                document.querySelector(".acciones-header")?.appendChild(aviso);
+            }
+        } finally {
+            cerrandoSesion = false;
+            if (boton) boton.disabled = false;
+        }
+    }
+
     // ---------- llamadas a la API ----------
     async function api(ruta, opciones = {}) {
-        const headers = { "Content-Type": "application/json" };
+        const headers = { ...opciones.headers, "Content-Type": "application/json" };
         if (token()) headers.Authorization = "Bearer " + token();
-
-        let respuesta;
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 15000);
         try {
-            respuesta = await fetch(API + ruta, { ...opciones, headers });
-        } catch {
-            throw new Error("No se pudo conectar con el servidor. ¿Está corriendo el backend?");
-        }
-
-        const data = await respuesta.json().catch(() => ({}));
+        const respuesta = await fetch(API + ruta, { ...opciones, headers, signal: controller.signal });
+        const data = await respuesta.json().catch(() => { throw new Error("El servidor envió una respuesta inválida. Inténtalo nuevamente."); });
         if (!respuesta.ok) {
-            if (respuesta.status === 401 && token()) cerrarSesion(); // token vencido
+            if (respuesta.status === 401 && token()) limpiarSesionLocal(); // token vencido
             const error = new Error(data.error || "Ocurrió un error.");
             error.status = respuesta.status;
             throw error;
         }
         return data;
+        } catch (error) {
+            if (error.name === "AbortError") throw new Error("El servidor tardó demasiado. Puedes reintentar la operación.");
+            if (error instanceof TypeError) throw new Error("No se pudo conectar con el servidor. Inténtalo nuevamente.");
+            throw error;
+        } finally { clearTimeout(timer); }
     }
 
     // ---------- modal (se crea solo, así no se repite en cada página) ----------
@@ -209,6 +238,7 @@
                         data-bs-toggle="dropdown" aria-expanded="false"></button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="pedido.html">Mi pedido</a></li>
+                    <li><a class="dropdown-item" href="mis-pedidos.html">Mis pedidos</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><button class="dropdown-item" type="button" id="btn-logout">Cerrar sesión</button></li>
                 </ul>`;

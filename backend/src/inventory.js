@@ -1,5 +1,5 @@
 'use strict';
-const {openDB,router,r,transaction,integer,str,HttpError,mustRole,positiveMoney,ports} = require('./common');
+const {openDB,router,r,transaction,integer,str,HttpError,mustRole,positiveMoney,ports,persistenceLog} = require('./common');
 const db=openDB('inventory');
 db.exec(`CREATE TABLE IF NOT EXISTS products (
  id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE, categoria TEXT NOT NULL,
@@ -59,15 +59,17 @@ const routes=[
  r('POST',/^\/internal\/batch$/,({body})=>{
   const ids=body.ids;
   if(!Array.isArray(ids)||ids.length>50)throw new HttpError(400,'Identificadores inválidos.');
+  const sql='SELECT * FROM products WHERE id=?';
   return [...new Set(ids.map(x=>integer(x,'Id',1,10000000)))].map(id=>{
-    const p=db.prepare('SELECT * FROM products WHERE id=?').get(id);
+    const p=db.prepare(sql).get(id);
+    persistenceLog('products',sql,p?1:0,{productoId:id});
     return p?{id:p.id,nombre:p.nombre,categoria:p.categoria,descripcion:p.descripcion,imagen:p.imagen}:null;
   }).filter(Boolean);
  }),
  r('POST',/^\/internal\/reserve$/,({body})=>{
   const key=str(body.key,'Clave de reserva',8,120),items=body.items;
   if(!Array.isArray(items)||items.length<1||items.length>50)throw new HttpError(400,'Items inválidos.');
-  const normalized=items.map(it=>({nombre:str(it.nombre,'Producto',1,120),cantidad:integer(it.cantidad,'Cantidad',1,50)}));
+  const normalized=items.map(it=>{if(!it||typeof it!=='object'||Array.isArray(it))throw new HttpError(400,'Producto inválido.');return {nombre:str(it.nombre,'Producto',1,120),cantidad:integer(it.cantidad,'Cantidad',1,50)};});
   if(new Set(normalized.map(it=>it.nombre)).size!==normalized.length)throw new HttpError(400,'Productos duplicados.');
   return transaction(db,()=>{
    const prev=db.prepare('SELECT * FROM reservations WHERE clave=?').get(key);

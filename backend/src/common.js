@@ -4,6 +4,29 @@ const { DatabaseSync } = require('node:sqlite');
 const path = require('node:path');
 const fs = require('node:fs');
 const crypto = require('node:crypto');
+const { AsyncLocalStorage } = require('node:async_hooks');
+const requestContext = new AsyncLocalStorage();
+// Los eventos del video complementan el resumen JSON de cada respuesta.
+// Solo se incluyen metadatos controlados; nunca cuerpos, contraseñas o cabeceras.
+function auditLog(componente,evento,campos={}) {
+  const context=requestContext.getStore();
+  if(!context)return;
+  console.log('['+componente+'] '+JSON.stringify({fecha:new Date().toISOString(),solicitud:context.cid,servicio:context.service,evento,...campos}));
+}
+function persistenceLog(tabla,sql,filas,referencia={}) {
+  const context=requestContext.getStore();
+  if(!context)return;
+  auditLog('PERSISTENCIA','consulta_ejecutada',{motor:'SQLite',base:context.service+'.sqlite',operacion:'SELECT',tabla,sql,filas,...referencia});
+}
+function traceRequest(req,res,service,handler) {
+  // El Gateway siempre crea el ID. Un servicio privado solo lo adopta tras
+  // comprobar la credencial interna en router().
+  const context={cid:crypto.randomUUID(),service};
+  const start=Date.now();
+  res.setHeader('X-Request-ID',context.cid);
+  res.once('finish',()=>console.log(JSON.stringify({cid:context.cid,service,method:req.method,route:req.traceRoute||'unmatched',status:res.statusCode,durationMs:Date.now()-start})));
+  return requestContext.run(context,handler);
+}
 
 const KEY_NAMES = ['JWT_SECRET', 'INVENTORY_SERVICE_KEY', 'ORDERS_SERVICE_KEY', 'CLIENTS_SERVICE_KEY', 'PAYMENTS_SERVICE_KEY', 'GRAPHQL_SERVICE_KEY', 'PAYMENT_WEBHOOK_SECRET'];
 const ports = () => {
@@ -53,6 +76,7 @@ async function readBody(req, limit = 65536) {
   return {body,raw};
 }
 function integer(value, label, min=1, max=Number.MAX_SAFE_INTEGER) {
+  if (typeof value !== 'number' && !(typeof value === 'string' && /^\d+$/.test(value))) throw new HttpError(400,label+' inválido.');
   const n=Number(value);
   if(!Number.isSafeInteger(n)||n<min||n>max) throw new HttpError(400,label+' inválido.');
   return n;
@@ -70,24 +94,34 @@ function fail(res, err, cid) {
 }
 function router(key, routes) {
   const secretValue=secret(key);
-  return http.createServer(async(req,res)=>{
-    const cid=crypto.randomUUID();
-    res.setHeader('X-Request-ID',cid);
+  return http.createServer((req,res)=>traceRequest(req,res,key.replace('_SERVICE_KEY','').toLowerCase(),async()=>{
+    const context=requestContext.getStore();
     try {
       // Para todo servicio privado se valida la identidad técnica enviada por el gateway.
       const auth=req.headers['x-service-key'] || '';
-      if(Buffer.byteLength(auth)!==Buffer.byteLength(secretValue)||!crypto.timingSafeEqual(Buffer.from(auth),Buffer.from(secretValue))) throw new HttpError(401,'Servicio interno no autorizado.');
+      if(Buffer.byteLength(auth)!==Buffer.byteLength(secretValue)||!crypto.timingSafeEqual(Buffer.from(auth),Buffer.from(secretValue))) {
+        auditLog('BACKEND','secreto_rechazado',{estado:401});
+        throw new HttpError(401,'Servicio interno no autorizado.');
+      }
+      const supplied=req.headers['x-request-id'];
+      if(typeof supplied==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(supplied))context.cid=supplied;
+      res.setHeader('X-Request-ID',context.cid);
+      auditLog('BACKEND','secreto_verificado');
       const u=new URL(req.url,'http://localhost');
+      if(u.pathname==='/health'&&req.method==='GET'){req.traceRoute='/health';respond(res,200,{ok:true});return;}
       const route=routes.find(r=>r.method===req.method&&r.pattern.test(u.pathname));
       if(!route) throw new HttpError(404,'Ruta no encontrada.');
+      req.traceRoute=route.pattern.source;
       const match=u.pathname.match(route.pattern);
       const {body,raw}=['POST','PUT','PATCH'].includes(req.method)?await readBody(req):{body:{},raw:Buffer.alloc(0)};
       const userId = /^\d+$/.test(req.headers['x-verified-user-id']||'') ? Number(req.headers['x-verified-user-id']) : null;
       const role = String(req.headers['x-verified-role']||'');
-      const data=await route.handler({req,res,u,params:match?.groups||{},body,raw,userId,role,cid});
+      auditLog('BACKEND','operacion_iniciada',{metodo:req.method,ruta:u.pathname});
+      const data=await route.handler({req,res,u,params:match?.groups||{},body,raw,userId,role,cid:context.cid});
+      auditLog('BACKEND','llamada_permitida',{estado:res.writableEnded?res.statusCode:(data?.status||200)});
       if(data!==undefined && !res.writableEnded) respond(res,data.status||200,data.body??data);
-    } catch(err) { fail(res,err,cid); }
-  });
+    } catch(err) { auditLog('BACKEND','llamada_rechazada',{estado:err instanceof HttpError?err.status:500});fail(res,err,context.cid); }
+  }));
 }
 function r(method, pattern, handler) {return {method,pattern,handler};}
 function mustUser(ctx) { if (!ctx.userId) throw new HttpError(401,'Debes iniciar sesión.'); return ctx.userId; }
@@ -97,7 +131,7 @@ async function requestTo(service, uri, {method='GET', body=null, rawBody=null, u
   try {
     const result=await fetch(`http://127.0.0.1:${ports()[service]}${uri}`,{
       method, signal:controller.signal,
-      headers:{'Content-Type':'application/json','X-Service-Key':secret(service.toUpperCase()+'_SERVICE_KEY'),...(userId?{'X-Verified-User-Id':String(userId),'X-Verified-Role':role}:{}),...headers},
+      headers:{'Content-Type':'application/json','X-Service-Key':secret(service.toUpperCase()+'_SERVICE_KEY'),...(requestContext.getStore()?{'X-Request-ID':requestContext.getStore().cid}:{}),...(userId?{'X-Verified-User-Id':String(userId),'X-Verified-Role':role}:{}),...headers},
       ...(rawBody!==null?{body:rawBody}:(body===null?{}:{body:JSON.stringify(body)}))
     });
     const obj=await result.json().catch(()=>({}));
@@ -118,4 +152,4 @@ function checkPassword(password,hash) {
     return want.length===candidate.length && crypto.timingSafeEqual(candidate,want);
   } catch {return false;}
 }
-module.exports={ports,secret,verifySecrets,openDB,transaction,HttpError,respond,readBody,integer,str,fail,router,r,mustUser,mustRole,requestTo,positiveMoney,sign,hashPassword,checkPassword};
+module.exports={ports,secret,verifySecrets,openDB,transaction,HttpError,respond,readBody,integer,str,fail,router,r,mustUser,mustRole,requestTo,positiveMoney,sign,hashPassword,checkPassword,traceRequest,requestContext,auditLog,persistenceLog};

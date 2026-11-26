@@ -1,5 +1,6 @@
 'use strict';
 const crypto=require('node:crypto');
+const {withLock}=require('./locks');
 const {openDB,router,r,requestTo,transaction,integer,str,HttpError,secret,ports} = require('./common');
 const db=openDB('payments');
 db.exec(`CREATE TABLE IF NOT EXISTS payments (
@@ -20,7 +21,7 @@ const routes=[
    return {status:201,body:{pagoId:Number(result.lastInsertRowid),referencia:ref,estado:'pendiente',modo:'prueba'}};
   });
  }),
- r('POST',/^\/internal\/demo\/confirm$/,async ctx=>{
+ r('POST',/^\/internal\/demo\/confirm$/,ctx=>withLock('payment:'+integer(ctx.body.orderId,'Pedido'),async()=>{
   // SOLO desarrollo local y activación explícita. No es un cobro real.
   const local=['127.0.0.1','localhost','::1'].includes(process.env.PUBLIC_HOST||'127.0.0.1');
   if(process.env.PAYMENTS_DEMO!=='1'||process.env.NODE_ENV==='production'||!local)
@@ -39,7 +40,7 @@ const routes=[
   await requestTo('orders','/internal/payment-event',{method:'POST',body:{orderId,estado}});
   db.prepare('UPDATE payments SET state=? WHERE id=?').run(estado,payment.id);
   return {estado,duplicado:false,modo:'prueba'};
- }),
+ })),
  r('GET',/^\/internal\/order\/(?<id>\d+)$/,ctx=>{
   const o=db.prepare('SELECT id,order_id AS orderId,amount,state AS estado,provider_ref AS referencia FROM payments WHERE order_id=?').get(integer(ctx.params.id,'Pedido'));
   if(!o)throw new HttpError(404,'Pago no encontrado.');return o;
@@ -48,13 +49,16 @@ const routes=[
   // La firma se verifica usando los bytes JSON exactos recibidos del proveedor.
   const sig=String(ctx.req.headers['x-provider-signature']||'');
   const want=crypto.createHmac('sha256',secret('PAYMENT_WEBHOOK_SECRET')).update(ctx.raw).digest('hex');
-  if(sig.length!==want.length||!crypto.timingSafeEqual(Buffer.from(sig),Buffer.from(want)))throw new HttpError(401,'Firma inválida.');
+  if(!/^[a-f0-9]{64}$/.test(sig)||!crypto.timingSafeEqual(Buffer.from(sig),Buffer.from(want)))throw new HttpError(401,'Firma inválida.');
   const eventId=str(ctx.body.eventId,'Evento',8,120),ref=str(ctx.body.referencia,'Referencia',8,120);
   const estado=str(ctx.body.estado,'Estado');if(!['aprobado','rechazado'].includes(estado))throw new HttpError(400,'Estado inválido.');
   const payment=db.prepare('SELECT * FROM payments WHERE provider_ref=?').get(ref);
   if(!payment)throw new HttpError(404,'Referencia desconocida.');
-  if(db.prepare('SELECT event_id FROM webhook_events WHERE event_id=?').get(eventId))return {status:200,body:{procesado:true,duplicado:true}};
-  if(payment.state==='aprobado'&&estado!=='aprobado')throw new HttpError(409,'No se puede revertir un pago aprobado.');
+  return withLock('payment:'+payment.order_id,async()=>{
+  const seen=db.prepare('SELECT payment_id FROM webhook_events WHERE event_id=?').get(eventId);
+  if(seen){if(seen.payment_id!==payment.id)throw new HttpError(409,'Evento asociado a otro pago.');return {status:200,body:{procesado:true,duplicado:true}};}
+  const current=db.prepare('SELECT state FROM payments WHERE id=?').get(payment.id);
+  if(current.state==='aprobado'&&estado!=='aprobado')throw new HttpError(409,'No se puede revertir un pago aprobado.');
   // Solo orders tiene autoridad para modificar el estado del pedido.
   await requestTo('orders','/internal/payment-event',{method:'POST',body:{orderId:payment.order_id,estado}});
   transaction(db,()=>{
@@ -62,6 +66,7 @@ const routes=[
     db.prepare('INSERT OR IGNORE INTO webhook_events(event_id,payment_id) VALUES(?,?)').run(eventId,payment.id);
   });
   return {procesado:true,duplicado:false,estado};
+  });
  })
 ];
 function start(){return router('PAYMENTS_SERVICE_KEY',routes).listen(ports().payments,'127.0.0.1',()=>console.log('payments ready'));}

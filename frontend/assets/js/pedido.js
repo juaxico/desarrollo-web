@@ -4,10 +4,15 @@
 
 function obtenerPedido() {
 
-    return JSON.parse(
-        localStorage.getItem("pedido")
-    ) || [];
+    try {
+        const value = JSON.parse(localStorage.getItem("pedido") || "[]");
+        return Array.isArray(value) ? value.filter(p => p && typeof p.nombre === "string" && Number.isFinite(p.precio) && p.precio > 0 && Number.isInteger(p.cantidad) && p.cantidad > 0 && p.cantidad <= 50) : [];
+    } catch { return []; }
 
+}
+
+function escaparPedido(valor) {
+    return String(valor).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 
@@ -87,7 +92,7 @@ function mostrarAlertaPedido(nombre) {
 
         <br>
 
-        ${nombre} fue agregado al pedido.
+        ${escaparPedido(nombre)} fue agregado al pedido.
 
         <button
             type="button"
@@ -152,7 +157,7 @@ function agregarAlPedido(
     // Si existe aumenta la cantidad
     if (productoExistente) {
 
-        productoExistente.cantidad++;
+        productoExistente.cantidad = Math.min(50, productoExistente.cantidad + 1);
 
         // Si venía de antes sin foto, se la agregamos
         if (!productoExistente.imagen && imagen) {
@@ -241,6 +246,12 @@ function cambiarCantidad(
 
     nuevaCantidad =
         Number(nuevaCantidad);
+
+    if (!Number.isInteger(nuevaCantidad) || nuevaCantidad > 50 || !pedido[indice]) {
+        mostrarPedido();
+        mostrarMensajeDespacho("La cantidad debe ser un número entero entre 1 y 50.", "warning");
+        return;
+    }
 
 
     // Si la cantidad llega a 0
@@ -420,7 +431,7 @@ const imagenHtml = archivoImagen
     ? `<img
             class="pedido-img"
             src="./assets/imagenes_productos/${encodeURIComponent(archivoImagen)}"
-            alt="${producto.nombre}"
+            alt="${escaparPedido(producto.nombre)}"
        >`
     : "";
 
@@ -449,7 +460,7 @@ const imagenHtml = archivoImagen
                                 <div>
 
                                 <h4>
-                                    ${producto.nombre}
+                                    ${escaparPedido(producto.nombre)}
                                 </h4>
 
 
@@ -509,6 +520,8 @@ const imagenHtml = archivoImagen
                                 type="number"
 
                                 min="1"
+                                max="50"
+                                aria-label="Cantidad de ${escaparPedido(producto.nombre)}"
 
                                 value="${producto.cantidad}"
 
@@ -888,9 +901,7 @@ async function confirmarPedido(evento) {
     boton.disabled = true;
     boton.textContent = "Procesando...";
     try {
-        const nuevo = await window.Auth.api("/pedidos", {
-            method: "POST",
-            body: JSON.stringify({
+        const cuerpo = JSON.stringify({
                 despacho: {
                     nombre: document.getElementById("desp-nombre").value,
                     direccion: document.getElementById("desp-direccion").value,
@@ -900,10 +911,21 @@ async function confirmarPedido(evento) {
                 },
                 // El servidor calcula el precio oficial de cada artículo.
                 items: carrito.map(p => ({ nombre: p.nombre, cantidad: p.cantidad }))
-            })
+            });
+        const intentoKey = "asador_intento_compra";
+        let intento;
+        try { intento = JSON.parse(sessionStorage.getItem(intentoKey) || "null"); } catch { intento = null; }
+        const usuarioId = window.Auth.usuario()?.id;
+        if (!intento || intento.cuerpo !== cuerpo || intento.usuarioId !== usuarioId) {
+            intento = {cuerpo, usuarioId, key: crypto.randomUUID()};
+            sessionStorage.setItem(intentoKey, JSON.stringify(intento));
+        }
+        const nuevo = await window.Auth.api("/pedidos", {
+            method: "POST", body: cuerpo, headers: {"Idempotency-Key": intento.key}
         });
         // El pedido ya existe en el backend: no enviarlo por segunda vez.
         guardarPagoPendiente(nuevo);
+        sessionStorage.removeItem(intentoKey);
         localStorage.removeItem("pedido");
         actualizarContadorPedido();
         operacionEnCurso = false;
@@ -918,11 +940,9 @@ async function confirmarPedido(evento) {
                     : "No se pudo comprobar el resultado de la operación. Revisa Mis pedidos antes de volver a enviarla.",
                 "danger"
             );
-            // Evita crear involuntariamente otro pedido si hubo una respuesta incierta.
-            if (error.status && error.status < 500) {
-                boton.disabled = false;
-                boton.textContent = "Pagar";
-            }
+            // El reintento conserva la clave: una respuesta incierta no duplica la compra.
+            boton.disabled = false;
+            boton.textContent = "Pagar";
         }
     } finally {
         operacionEnCurso = false;

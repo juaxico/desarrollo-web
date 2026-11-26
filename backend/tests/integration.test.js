@@ -115,6 +115,6 @@ test('Integración del backend completo',async t=>{
   assert.equal((await req('GET','/api/auth/me',null,token2)).status,401);
  });
  } finally {
-  const outfile=path.join(__dirname,'resultados.json');fs.writeFileSync(outfile,JSON.stringify({fecha:new Date().toISOString(),ambiente:'Node '+process.version,pruebas:results},null,2)+'\n');
+  const outfile=process.env.EVIDENCE_DIR?path.join(process.env.EVIDENCE_DIR,'integracion-anterior.json'):path.join(__dirname,'resultados.json');fs.mkdirSync(path.dirname(outfile),{recursive:true});fs.writeFileSync(outfile,JSON.stringify({fecha:new Date().toISOString(),ambiente:'Node '+process.version,pruebas:results},null,2)+'\n');
  }
 });

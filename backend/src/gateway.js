@@ -1,6 +1,6 @@
 'use strict';
 const http=require('node:http');const fs=require('node:fs');const path=require('node:path');const crypto=require('node:crypto');
-const {ports,requestTo,respond,readBody,HttpError,fail}=require('./common');
+const {ports,requestTo,respond,readBody,HttpError,fail,traceRequest,requestContext,auditLog}=require('./common');
 const front=path.resolve(__dirname,'../../frontend');
 const MIME={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.jfif':'image/jpeg','.svg':'image/svg+xml','.ico':'image/x-icon'};
 const routes=[
@@ -36,12 +36,22 @@ function readAuth(req){const a=req.headers.authorization||'';return a.startsWith
 async function jsonApi(req,res,u){
  const route=routes.find(x=>x[0]===req.method&&x[1].test(u.pathname));if(!route)throw new HttpError(404,'Ruta no encontrada.');
  const [,pattern,service,dest,policy]=route;const match=u.pathname.match(pattern);const parts=match.groups||{};
+ req.traceRoute=pattern.source;
+ auditLog('GATEWAY','solicitud_recibida',{metodo:req.method,ruta:u.pathname});
  limited(req.socket.remoteAddress||'desconocido',u.pathname.includes('/auth/login'));
  let user=null;
  if(!['public','webhook'].includes(policy)){
-  const auth=readAuth(req);if(!auth)throw new HttpError(401,'Debes iniciar sesión.');
-  const check=await requestTo('clients','/internal/validate',{headers:{Authorization:auth}});
-  user=check.usuario;
+  const auth=readAuth(req);
+  if(!auth){auditLog('GATEWAY','validacion_rechazada',{motivo:'sin_sesion',estado:401});throw new HttpError(401,'Debes iniciar sesión.');}
+  auditLog('GATEWAY','validacion_solicitada',{destino:'clients',funcion:'autenticacion',puerto:ports().clients,ruta:'/internal/validate'});
+  try {
+   const check=await requestTo('clients','/internal/validate',{headers:{Authorization:auth}});
+   user=check.usuario;
+   auditLog('GATEWAY','validacion_aprobada');
+  } catch(error) {
+   auditLog('GATEWAY','validacion_fallida',{estado:error.status||500});
+   throw error;
+  }
   if(policy==='inventoryAdmin'&&!['admin','admin_inventario'].includes(user.role))throw new HttpError(403,'Acceso denegado.');
   if(policy==='ordersAdmin'&&!['admin','operador_pedidos'].includes(user.role))throw new HttpError(403,'Acceso denegado.');
  }
@@ -50,6 +60,8 @@ async function jsonApi(req,res,u){
  const internal=typeof dest==='function'?dest(parts):dest;
  const qs=u.searchParams.toString();const url=internal+(qs?'?'+qs:'');
  const forwardedHeaders=policy==='webhook'?{'x-provider-signature':req.headers['x-provider-signature']||''}:{};
+ if(u.pathname==='/api/pedidos'&&req.headers['idempotency-key'])forwardedHeaders['Idempotency-Key']=req.headers['idempotency-key'];
+ auditLog('GATEWAY','enrutamiento',{destino:service,puerto:ports()[service],metodo:req.method,ruta:internal});
  const out=await requestTo(service,url,{method:req.method,body,rawBody:policy==='webhook'?input.raw:null,userId:user?.id,role:user?.role||'',headers:forwardedHeaders});
  const status=(req.method==='POST' && (u.pathname==='/api/pedidos'||u.pathname==='/api/auth/registro'||u.pathname==='/api/admin/productos'))?201:200;
  respond(res,status,out);
@@ -63,16 +75,25 @@ function serveStatic(req,res,u){
  const ext=path.extname(normalized).toLowerCase();if(!MIME[ext])throw new HttpError(404,'Archivo no encontrado.');
  let stats;try{stats=fs.statSync(normalized);}catch{throw new HttpError(404,'Archivo no encontrado.');}
  if(!stats.isFile())throw new HttpError(404,'Archivo no encontrado.');
- res.writeHead(200,{'Content-Type':MIME[ext],'X-Content-Type-Options':'nosniff','Cache-Control':ext==='.html'?'no-cache':'public, max-age=300'});
+ res.writeHead(200,{'Content-Type':MIME[ext],'X-Content-Type-Options':'nosniff','Cache-Control':['.html','.js','.css'].includes(ext)?'no-cache':'public, max-age=300'});
  if(req.method==='HEAD')res.end();else fs.createReadStream(normalized).pipe(res);
 }
-function start(){return http.createServer(async(req,res)=>{
-  const cid=crypto.randomUUID();res.setHeader('X-Request-ID',cid);
+function start(){return http.createServer((req,res)=>traceRequest(req,res,'gateway',async()=>{
+  const context=requestContext.getStore(),cid=context.cid;
+  let isApi=false;
+  res.once('finish',()=>{if(isApi)requestContext.run(context,()=>auditLog('GATEWAY','respuesta_enviada',{estado:res.statusCode}));});
   res.setHeader('X-Frame-Options','DENY');res.setHeader('Referrer-Policy','same-origin');
   try{
    const u=new URL(req.url,'http://localhost');
-   if(u.pathname==='/health'&&req.method==='GET')return respond(res,200,{ok:true,servicio:'gateway'});
-   if(u.pathname.startsWith('/api/'))await jsonApi(req,res,u);else serveStatic(req,res,u);
-  }catch(e){fail(res,e,cid);}
- }).listen(ports().gateway,process.env.PUBLIC_HOST||'127.0.0.1',()=>console.log('Gateway: http://127.0.0.1:'+ports().gateway));}
+   if(u.pathname==='/health'&&req.method==='GET'){req.traceRoute='/health';return respond(res,200,{ok:true,servicio:'gateway'});}
+   if(u.pathname==='/health/ready'&&req.method==='GET'){
+    req.traceRoute='/health/ready';
+    const checks=await Promise.all(['inventory','clients','orders','payments','graphql'].map(async name=>{
+     try{await requestTo(name,'/health');return [name,true];}catch{return [name,false];}
+    }));
+    const ok=checks.every(([,ready])=>ready);return respond(res,ok?200:503,{ok,servicios:Object.fromEntries(checks)});
+   }
+   if(u.pathname.startsWith('/api/')){isApi=true;await jsonApi(req,res,u);}else serveStatic(req,res,u);
+  }catch(e){if(isApi)auditLog('GATEWAY','solicitud_interrumpida',{estado:e instanceof HttpError?e.status:500});fail(res,e,cid);}
+ })).listen(ports().gateway,process.env.PUBLIC_HOST||'127.0.0.1',()=>console.log('Gateway: http://127.0.0.1:'+ports().gateway));}
 module.exports={start,routes};
