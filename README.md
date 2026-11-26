@@ -42,4 +42,3 @@ Abrir `http://127.0.0.1:3400`. En esa terminal se aceptan `stop inventory`, `sta
 
 El frontend también permite `npm ci`, `npm run dev`, `npm run build` y `npm run preview` desde `frontend/`, con el backend encendido. La compilación incluye las seis entradas HTML, los scripts clásicos y las imágenes dinámicas del catálogo. Los avisos de Vite sobre scripts sin `type="module"` son esperados: se conservan como scripts clásicos por compatibilidad con los controles HTML y se copian al resultado mediante el plugin de compilación.
 
-Detalles de correcciones, pruebas y limitaciones: [revisión local de la Unidad 3](backend/docs/Evaluacion_3_Revision_Local.md).
